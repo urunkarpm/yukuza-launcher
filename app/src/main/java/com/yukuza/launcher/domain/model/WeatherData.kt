@@ -9,4 +9,6 @@ data class WeatherData(
     val locationName: String,
     val fetchedAt: Long,
     val isStale: Boolean = false,
-)
+) {
+    companion object
+}

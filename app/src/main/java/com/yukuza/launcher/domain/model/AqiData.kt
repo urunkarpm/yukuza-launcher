@@ -10,4 +10,5 @@ data class AqiData(
     val isStale: Boolean = false,
 ) {
     enum class AqiCategory { GOOD, FAIR, MODERATE, POOR, VERY_POOR }
+    companion object
 }
