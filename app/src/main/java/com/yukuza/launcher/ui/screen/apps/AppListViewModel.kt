@@ -29,7 +29,7 @@ class AppListViewModel @Inject constructor(
         combine(allApps, query) { apps, q ->
             if (q.isBlank()) apps
             else apps.filter { it.label.contains(q, ignoreCase = true) }.toImmutableList()
-        }.stateIn(viewModelScope, SharingStarted.Lazily, persistentListOf())
+        }.stateIn(viewModelScope, SharingStarted.Eagerly, persistentListOf())
 
     fun onSearch(q: String) {
         query.value = q

@@ -96,12 +96,13 @@ fun NowPlayingWidget(
                 )
                 Column(Modifier.padding(18.dp)) {
                     // Source badge with pulsing dot
+                    val pulse = pulseAlpha()
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Box(
                             Modifier
                                 .size(6.dp)
                                 .background(Color(0xFF1DB954), CircleShape)
-                                .graphicsLayer { alpha = pulseAlpha() }
+                                .graphicsLayer { alpha = pulse }
                         )
                         Spacer(Modifier.width(6.dp))
                         Text(

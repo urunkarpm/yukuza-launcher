@@ -1,5 +1,7 @@
 package com.yukuza.launcher.ui.components.glass
 
+import android.graphics.RenderEffect as AndroidRenderEffect
+import android.graphics.Shader as AndroidShader
 import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -8,8 +10,6 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.RenderEffect
-import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.asComposeRenderEffect
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
@@ -36,8 +36,8 @@ fun GlassCard(
             .graphicsLayer {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     @Suppress("NewApi")
-                    renderEffect = RenderEffect
-                        .createBlurEffect(30f, 30f, Shader.TileMode.CLAMP)
+                    renderEffect = AndroidRenderEffect
+                        .createBlurEffect(30f, 30f, AndroidShader.TileMode.CLAMP)
                         .asComposeRenderEffect()
                 }
             },

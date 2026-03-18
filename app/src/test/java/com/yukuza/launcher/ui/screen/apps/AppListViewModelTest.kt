@@ -29,10 +29,12 @@ class AppListViewModelTest {
     fun `search filters app list by label`() = runTest {
         every { getApps() } returns flowOf(apps)
         val vm = AppListViewModel(getApps)
+        mainDispatcherRule.testDispatcher.scheduler.advanceUntilIdle()
         vm.onSearch("you")
         mainDispatcherRule.testDispatcher.scheduler.advanceUntilIdle()
         vm.filteredApps.test {
-            val filtered = awaitItem()
+            val item = awaitItem()
+            val filtered = if (item.isEmpty()) awaitItem() else item
             assertEquals(1, filtered.size)
             assertEquals("YouTube", filtered[0].label)
             cancelAndIgnoreRemainingEvents()
@@ -45,7 +47,8 @@ class AppListViewModelTest {
         val vm = AppListViewModel(getApps)
         mainDispatcherRule.testDispatcher.scheduler.advanceUntilIdle()
         vm.filteredApps.test {
-            val all = awaitItem()
+            val item = awaitItem()
+            val all = if (item.isEmpty()) awaitItem() else item
             assertEquals(2, all.size)
             cancelAndIgnoreRemainingEvents()
         }

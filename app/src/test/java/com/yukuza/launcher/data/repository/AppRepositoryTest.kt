@@ -28,14 +28,8 @@ class AppRepositoryTest {
         )
         coEvery { appOrderDao.getAll() } returns flowOf(storedOrder)
 
-        val appInfoA = mockk<ApplicationInfo> {
-            every { packageName } returns "com.a"
-            every { flags } returns 0 // non-system
-        }
-        val appInfoB = mockk<ApplicationInfo> {
-            every { packageName } returns "com.b"
-            every { flags } returns 0
-        }
+        val appInfoA = ApplicationInfo().apply { packageName = "com.a"; flags = 0 }
+        val appInfoB = ApplicationInfo().apply { packageName = "com.b"; flags = 0 }
         every { pm.getInstalledApplications(any<Int>()) } returns listOf(appInfoA, appInfoB)
         every { pm.getApplicationLabel(appInfoA) } returns "App A"
         every { pm.getApplicationLabel(appInfoB) } returns "App B"
@@ -50,10 +44,7 @@ class AppRepositoryTest {
     fun `new apps not in stored order get appended`() = runTest {
         coEvery { appOrderDao.getAll() } returns flowOf(emptyList())
 
-        val appInfo = mockk<ApplicationInfo> {
-            every { packageName } returns "com.new"
-            every { flags } returns 0
-        }
+        val appInfo = ApplicationInfo().apply { packageName = "com.new"; flags = 0 }
         every { pm.getInstalledApplications(any<Int>()) } returns listOf(appInfo)
         every { pm.getApplicationLabel(appInfo) } returns "New App"
         coEvery { colorCacheDao.get(any()) } returns null

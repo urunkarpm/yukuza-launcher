@@ -2,6 +2,8 @@ package com.yukuza.launcher.ui.components
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.RenderEffect as AndroidRenderEffect
+import android.graphics.Shader as AndroidShader
 import android.os.Build
 import android.speech.RecognizerIntent
 import android.widget.Toast
@@ -16,8 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RenderEffect
-import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.asComposeRenderEffect
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
@@ -39,8 +39,8 @@ fun AssistantButton(modifier: Modifier = Modifier) {
             .graphicsLayer {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     @Suppress("NewApi")
-                    renderEffect = RenderEffect
-                        .createBlurEffect(30f, 30f, Shader.TileMode.CLAMP)
+                    renderEffect = AndroidRenderEffect
+                        .createBlurEffect(30f, 30f, AndroidShader.TileMode.CLAMP)
                         .asComposeRenderEffect()
                 }
             }

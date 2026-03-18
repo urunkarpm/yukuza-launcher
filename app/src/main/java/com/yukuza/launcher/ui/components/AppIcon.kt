@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.focusable
@@ -22,7 +23,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -35,6 +35,7 @@ import coil.request.ImageRequest
 import com.yukuza.launcher.domain.model.AppInfo
 import com.yukuza.launcher.ui.theme.YukuzaColors
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AppIcon(
     app: AppInfo,
@@ -78,19 +79,19 @@ fun AppIcon(
                 .data(context.packageManager.getApplicationIcon(app.packageName))
                 .build(),
             contentDescription = null,
+            colorFilter = ColorFilter.colorMatrix(
+                ColorMatrix().apply { setToSaturation(saturation) }
+            ),
             modifier = Modifier
                 .size(72.dp)
                 .graphicsLayer {
                     scaleX = scale
                     scaleY = scale
                     translationY = offsetY
-                    colorFilter = ColorFilter.colorMatrix(
-                        ColorMatrix().apply { setToSaturation(saturation) }
-                    )
                     if (isFocused) {
                         shadowElevation = 16f
-                        ambientShadowColor = app.dominantColor.toArgb()
-                        spotShadowColor = app.dominantColor.toArgb()
+                        ambientShadowColor = app.dominantColor
+                        spotShadowColor = app.dominantColor
                     }
                 }
                 .clip(RoundedCornerShape(18.dp))

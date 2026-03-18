@@ -16,22 +16,22 @@ class NightModeScheduleTest {
     }
 
     @Test
-    fun `night mode active at 23:00 with schedule 22 to 7`() {
+    fun `night mode active at 23h with schedule 22 to 7`() {
         assertTrue(isNightModeActive(23, 22, 7))
     }
 
     @Test
-    fun `night mode active at 2 with schedule 22 to 7`() {
+    fun `night mode active at 02h with schedule 22 to 7`() {
         assertTrue(isNightModeActive(2, 22, 7))
     }
 
     @Test
-    fun `night mode inactive at 8 with schedule 22 to 7`() {
+    fun `night mode inactive at 08h with schedule 22 to 7`() {
         assertFalse(isNightModeActive(8, 22, 7))
     }
 
     @Test
-    fun `night mode inactive at 12 with schedule 22 to 7`() {
+    fun `night mode inactive at 12h with schedule 22 to 7`() {
         assertFalse(isNightModeActive(12, 22, 7))
     }
 }
