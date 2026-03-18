@@ -144,7 +144,17 @@ keytool -genkey -v -keystore your-keystore.jks -alias your_alias \
 
 ### Set as Default Launcher
 
-On your Android TV, go to **Settings → Device Preferences → Home screen → Home app → Yukuza Launcher**.
+Most Android TV devices don't offer a built-in launcher picker. The easiest method is to use **Launch Manager for Android TV**:
+
+1. Download `Launch Manager - Android TV_1.0.3_APKPure.apk` from the [releases page](https://github.com/urunkarpm/yukuza-launcher/releases/tag/v1.0.0)
+2. Install it on your TV:
+   ```bash
+   adb install "Launch Manager - Android TV_1.0.3_APKPure.apk"
+   ```
+3. Open **Launch Manager** on your TV
+4. Select **Yukuza Launcher** as the default home app
+
+> **Alternative (stock Android TV):** Settings → Device Preferences → Home screen → Home app → Yukuza Launcher *(only available on some devices)*
 
 ---
 
