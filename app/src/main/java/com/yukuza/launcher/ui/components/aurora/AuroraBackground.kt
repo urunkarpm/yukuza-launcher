@@ -16,43 +16,42 @@ import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
+import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.graphicsLayer
 import com.yukuza.launcher.ui.theme.YukuzaColors
 
-data class BlobDef(
+private data class BlobDef(
     val color: Color,
-    val baseOffset: Offset,
-    val drift: Offset,
-    val widthFraction: Float,
-    val heightFraction: Float,
+    val baseOffset: Offset, // normalised 0..1
+    val drift: Offset,      // normalised drift magnitude
+    val radius: Float,      // fraction of screen height
+    val xStretch: Float,    // horizontal stretch > 1 = wide nebula cloud
+    val durationMs: Int,
+)
+
+private val blobs = listOf(
+    BlobDef(Color(0xFF8C32FF).copy(alpha = 0.82f), Offset(0.08f, 0.28f), Offset(0.06f,  0.04f), 0.58f, 2.2f, 20000),
+    BlobDef(Color(0xFFE628A0).copy(alpha = 0.72f), Offset(0.78f, 0.18f), Offset(-0.07f, 0.05f), 0.50f, 1.8f, 17000),
+    BlobDef(Color(0xFF3C64FF).copy(alpha = 0.68f), Offset(0.48f, 0.68f), Offset(0.05f, -0.06f), 0.52f, 2.4f, 22000),
+    BlobDef(Color(0xFF00B4DC).copy(alpha = 0.58f), Offset(0.20f, 0.72f), Offset(0.07f, -0.04f), 0.44f, 1.9f, 16000),
+    BlobDef(Color(0xFFB43CFF).copy(alpha = 0.52f), Offset(0.62f, 0.48f), Offset(-0.05f, 0.06f), 0.40f, 2.0f, 19000),
 )
 
 @Composable
 fun AuroraBackground(modifier: Modifier = Modifier) {
     val infiniteTransition = rememberInfiniteTransition(label = "aurora")
 
-    val offsets = (0..4).map { i ->
+    val offsets = blobs.mapIndexed { i, blob ->
         infiniteTransition.animateFloat(
             initialValue = 0f,
             targetValue = 1f,
             animationSpec = infiniteRepeatable(
-                animation = tween(
-                    durationMillis = 10_000 + i * 3_000,
-                    easing = EaseInOut,
-                ),
+                animation = tween(durationMillis = blob.durationMs, easing = EaseInOut),
                 repeatMode = RepeatMode.Reverse,
             ),
             label = "blob_$i",
         )
     }
-
-    val blobDefs = listOf(
-        BlobDef(YukuzaColors.AuroraPurple.copy(alpha = 0.55f), Offset(-0.08f, -0.15f), Offset(0.04f,  0.07f), 0.65f, 0.60f),
-        BlobDef(YukuzaColors.AuroraTeal.copy(alpha = 0.45f),   Offset(0.53f,  -0.10f), Offset(-0.05f, 0.05f), 0.55f, 0.55f),
-        BlobDef(YukuzaColors.AuroraPink.copy(alpha = 0.30f),   Offset(0.28f,   0.08f), Offset(0.05f,  0.03f), 0.50f, 0.45f),
-        BlobDef(YukuzaColors.AuroraBlue.copy(alpha = 0.28f),   Offset(0.42f,   0.00f), Offset(-0.04f, 0.05f), 0.40f, 0.40f),
-        BlobDef(Color(0xFF9B82F5).copy(alpha = 0.38f),          Offset(0.62f,  -0.05f), Offset(0.04f, -0.04f), 0.38f, 0.35f),
-    )
 
     Canvas(
         modifier = modifier
@@ -61,29 +60,41 @@ fun AuroraBackground(modifier: Modifier = Modifier) {
     ) {
         drawRect(color = YukuzaColors.DeepBlack)
 
-        blobDefs.forEachIndexed { i, blob ->
+        blobs.forEachIndexed { i, blob ->
             val t = offsets[i].value
             val cx = (blob.baseOffset.x + blob.drift.x * t) * size.width
             val cy = (blob.baseOffset.y + blob.drift.y * t) * size.height
-            val radius = blob.widthFraction * size.width * 0.5f
+            val radius = blob.radius * size.height
 
-            drawCircle(
-                brush = Brush.radialGradient(
-                    colors = listOf(blob.color, Color.Transparent),
-                    center = Offset(cx, cy),
+            withTransform({
+                scale(scaleX = blob.xStretch, scaleY = 1f, pivot = Offset(cx, cy))
+            }) {
+                drawCircle(
+                    brush = Brush.radialGradient(
+                        colorStops = arrayOf(
+                            0.00f to blob.color,
+                            0.40f to blob.color.copy(alpha = blob.color.alpha * 0.55f),
+                            1.00f to Color.Transparent,
+                        ),
+                        center = Offset(cx, cy),
+                        radius = radius,
+                    ),
                     radius = radius,
-                ),
-                radius = radius,
-                center = Offset(cx, cy),
-                blendMode = BlendMode.Screen,
-            )
+                    center = Offset(cx, cy),
+                    blendMode = BlendMode.Screen,
+                )
+            }
         }
 
-        // Vignette
+        // Vignette — transparent centre, heavy dark edge so UI content reads cleanly
         drawRect(
             brush = Brush.radialGradient(
-                colors = listOf(Color.Transparent, Color(0xA0020108)),
-                radius = size.minDimension * 0.8f,
+                colorStops = arrayOf(
+                    0.00f to Color.Transparent,
+                    0.55f to Color(0x28060210),
+                    1.00f to Color(0xD0060210),
+                ),
+                radius = size.maxDimension * 0.70f,
             ),
         )
     }
