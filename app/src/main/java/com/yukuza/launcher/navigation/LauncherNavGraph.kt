@@ -27,6 +27,8 @@ fun LauncherNavGraph() {
                 onNetworkClick = { },
                 onSettingsToggle = vm::toggleSettings,
                 onSeeAllApps = { navController.navigate("apps") },
+                onCityQueryChange = vm::onCityQueryChange,
+                onCitySelected = vm::onCitySelected,
             )
         }
         composable("apps") {

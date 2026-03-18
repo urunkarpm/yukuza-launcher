@@ -44,6 +44,8 @@ fun HomeScreen(
     onNetworkClick: () -> Unit,
     onSettingsToggle: () -> Unit = {},
     onSeeAllApps: () -> Unit = {},
+    onCityQueryChange: (String) -> Unit = {},
+    onCitySelected: (com.yukuza.launcher.data.remote.GeocodingResult) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val density = LocalDensity.current.density
@@ -130,6 +132,11 @@ fun HomeScreen(
                 onDismiss = onSettingsToggle,
                 isNightMode = uiState.isNightMode,
                 onNightModeToggle = { },
+                cityQuery = uiState.cityQuery,
+                citySuggestions = uiState.citySuggestions,
+                cityName = uiState.cityName,
+                onCityQueryChange = onCityQueryChange,
+                onCitySelected = onCitySelected,
             )
         }
     }

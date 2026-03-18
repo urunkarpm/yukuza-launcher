@@ -16,6 +16,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -34,6 +40,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
+import com.yukuza.launcher.data.remote.GeocodingResult
 import com.yukuza.launcher.ui.components.glass.GlassCard
 
 @Composable
@@ -41,6 +48,11 @@ fun QuickSettingsOverlay(
     onDismiss: () -> Unit,
     isNightMode: Boolean,
     onNightModeToggle: () -> Unit,
+    cityQuery: String,
+    citySuggestions: List<GeocodingResult>,
+    cityName: String,
+    onCityQueryChange: (String) -> Unit,
+    onCitySelected: (GeocodingResult) -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -98,6 +110,18 @@ fun QuickSettingsOverlay(
                 if (context.checkSelfPermission("android.permission.HDMI_CEC") == android.content.pm.PackageManager.PERMISSION_GRANTED) {
                     InputSourceButton()
                 }
+
+                // City picker
+                CityPickerSection(
+                    cityQuery = cityQuery,
+                    suggestions = citySuggestions,
+                    cityName = cityName,
+                    onQueryChange = onCityQueryChange,
+                    onCitySelected = { result ->
+                        onCitySelected(result)
+                        onDismiss()
+                    },
+                )
             }
         }
     }
@@ -256,5 +280,57 @@ private fun InputSourceButton() {
         Text("Input Source", color = Color.White, modifier = Modifier.weight(1f))
         Spacer(Modifier.width(8.dp))
         Text("HDMI-CEC required", color = Color.White.copy(alpha = 0.4f))
+    }
+}
+
+@Composable
+private fun CityPickerSection(
+    cityQuery: String,
+    suggestions: List<GeocodingResult>,
+    cityName: String,
+    onQueryChange: (String) -> Unit,
+    onCitySelected: (GeocodingResult) -> Unit,
+) {
+    Column {
+        Text(
+            text = "Weather City${if (cityName.isNotBlank()) ": $cityName" else ""}",
+            color = Color.White.copy(alpha = 0.7f),
+        )
+        OutlinedTextField(
+            value = cityQuery,
+            onValueChange = onQueryChange,
+            placeholder = { Text("Search city…", color = Color.White.copy(0.4f)) },
+            singleLine = true,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color.White,
+                unfocusedTextColor = Color.White,
+                focusedBorderColor = Color.White.copy(0.5f),
+                unfocusedBorderColor = Color.White.copy(0.2f),
+            ),
+            modifier = Modifier.fillMaxWidth(),
+        )
+        if (suggestions.isNotEmpty()) {
+            LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                items(suggestions) { result ->
+                    val subtitle = listOfNotNull(result.admin1, result.country).joinToString(", ")
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .clickable { onCitySelected(result) }
+                            .padding(vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Column(Modifier.weight(1f)) {
+                            Text(result.name, color = Color.White)
+                            if (subtitle.isNotBlank()) {
+                                Text(subtitle, color = Color.White.copy(0.5f),
+                                    style = MaterialTheme.typography.labelSmall)
+                            }
+                        }
+                    }
+                    HorizontalDivider(color = Color.White.copy(0.08f))
+                }
+            }
+        }
     }
 }

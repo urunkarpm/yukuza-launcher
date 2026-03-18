@@ -1,8 +1,15 @@
 package com.yukuza.launcher.ui.screen.home
 
 import androidx.compose.runtime.Immutable
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.doublePreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yukuza.launcher.data.remote.GeocodingApi
+import com.yukuza.launcher.data.remote.GeocodingResult
 import com.yukuza.launcher.domain.model.AqiData
 import com.yukuza.launcher.domain.model.AppInfo
 import com.yukuza.launcher.domain.model.MediaData
@@ -20,6 +27,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -36,6 +44,9 @@ data class HomeUiState(
     val isNightMode: Boolean = false,
     val isAmbient: Boolean = false,
     val showSettings: Boolean = false,
+    val cityQuery: String = "",
+    val citySuggestions: List<GeocodingResult> = emptyList(),
+    val cityName: String = "",
 )
 
 @HiltViewModel
@@ -46,6 +57,8 @@ class HomeViewModel @Inject constructor(
     private val getAqi: GetAqiUseCase,
     private val getNetwork: GetNetworkSpeedUseCase,
     private val getMedia: GetMediaSessionUseCase,
+    private val dataStore: DataStore<Preferences>,
+    private val geocodingApi: GeocodingApi,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
@@ -55,6 +68,10 @@ class HomeViewModel @Inject constructor(
     private val defaultLat = 19.07
     private val defaultLon = 72.87
 
+    private val latKey = doublePreferencesKey("lat")
+    private val lonKey = doublePreferencesKey("lon")
+    private val cityNameKey = stringPreferencesKey("city_name")
+
     init {
         viewModelScope.launch {
             getApps().collect { apps ->
@@ -62,12 +79,12 @@ class HomeViewModel @Inject constructor(
             }
         }
         viewModelScope.launch {
-            val weather = getWeather(defaultLat, defaultLon)
-            _uiState.update { it.copy(weather = weather) }
-        }
-        viewModelScope.launch {
-            val aqi = getAqi(defaultLat, defaultLon)
-            _uiState.update { it.copy(aqi = aqi) }
+            val prefs = dataStore.data.first()
+            val lat = prefs[latKey] ?: defaultLat
+            val lon = prefs[lonKey] ?: defaultLon
+            val city = prefs[cityNameKey] ?: "Mumbai"
+            _uiState.update { it.copy(cityName = city) }
+            fetchWeatherForLocation(lat, lon)
         }
         viewModelScope.launch {
             getNetwork().collect { net ->
@@ -78,6 +95,45 @@ class HomeViewModel @Inject constructor(
             getMedia().collect { media ->
                 _uiState.update { it.copy(nowPlaying = media) }
             }
+        }
+    }
+
+    private fun fetchWeatherForLocation(lat: Double, lon: Double) {
+        viewModelScope.launch {
+            val weather = getWeather(lat, lon)
+            _uiState.update { it.copy(weather = weather) }
+        }
+        viewModelScope.launch {
+            val aqi = getAqi(lat, lon)
+            _uiState.update { it.copy(aqi = aqi) }
+        }
+    }
+
+    fun onCityQueryChange(query: String) {
+        _uiState.update { it.copy(cityQuery = query, citySuggestions = emptyList()) }
+        if (query.length >= 2) {
+            viewModelScope.launch {
+                try {
+                    val results = geocodingApi.searchCity(query)
+                    _uiState.update { it.copy(citySuggestions = results.results ?: emptyList()) }
+                } catch (e: Exception) { /* ignore */ }
+            }
+        }
+    }
+
+    fun onCitySelected(result: GeocodingResult) {
+        viewModelScope.launch {
+            dataStore.edit { prefs ->
+                prefs[latKey] = result.latitude
+                prefs[lonKey] = result.longitude
+                prefs[cityNameKey] = result.name
+            }
+            _uiState.update { it.copy(
+                cityName = result.name,
+                cityQuery = "",
+                citySuggestions = emptyList(),
+            )}
+            fetchWeatherForLocation(result.latitude, result.longitude)
         }
     }
 

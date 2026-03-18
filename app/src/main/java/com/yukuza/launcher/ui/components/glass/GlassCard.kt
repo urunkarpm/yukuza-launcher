@@ -22,25 +22,30 @@ fun GlassCard(
     content: @Composable BoxScope.() -> Unit,
 ) {
     val density = LocalDensity.current.density
+    val shape = RoundedCornerShape(12.dp)
     Box(
         modifier = modifier
-            .background(
-                color = YukuzaColors.GlassSurface,
-                shape = RoundedCornerShape(12.dp),
-            )
             .border(
                 width = if (density >= 2f) 0.5.dp else 1.dp,
                 color = YukuzaColors.GlassBorder,
-                shape = RoundedCornerShape(12.dp),
-            )
-            .graphicsLayer {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    @Suppress("NewApi")
-                    renderEffect = AndroidRenderEffect
-                        .createBlurEffect(30f, 30f, AndroidShader.TileMode.CLAMP)
-                        .asComposeRenderEffect()
+                shape = shape,
+            ),
+    ) {
+        // Blurred background layer only — content is NOT inside this Box
+        Box(
+            Modifier
+                .matchParentSize()
+                .graphicsLayer {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        @Suppress("NewApi")
+                        renderEffect = AndroidRenderEffect
+                            .createBlurEffect(30f, 30f, AndroidShader.TileMode.CLAMP)
+                            .asComposeRenderEffect()
+                    }
                 }
-            },
-        content = content,
-    )
+                .background(color = YukuzaColors.GlassSurface, shape = shape),
+        )
+        // Content on top — never blurred
+        Box(content = content)
+    }
 }

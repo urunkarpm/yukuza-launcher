@@ -1,8 +1,8 @@
 package com.yukuza.launcher.ui.components
 
 import android.content.Context
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -23,6 +22,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
@@ -48,6 +49,11 @@ fun AppIcon(
     val context = LocalContext.current
     val density = LocalDensity.current.density
 
+    val saturation by animateFloatAsState(
+        targetValue = if (isFocused) 1f else 0f,
+        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
+        label = "saturation",
+    )
     val scale by animateFloatAsState(
         targetValue = if (isFocused) 1.15f else 1f,
         animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
@@ -76,7 +82,7 @@ fun AppIcon(
             .semantics { contentDescription = "${app.label}, app icon" },
     ) {
         Box(contentAlignment = Alignment.Center) {
-            // Glow halo behind icon
+            // Glow halo behind icon — only visible on focus
             Box(
                 Modifier
                     .size(84.dp)
@@ -90,6 +96,9 @@ fun AppIcon(
                     .data(context.packageManager.getApplicationIcon(app.packageName))
                     .build(),
                 contentDescription = null,
+                colorFilter = ColorFilter.colorMatrix(
+                    ColorMatrix().apply { setToSaturation(saturation) }
+                ),
                 modifier = Modifier
                     .size(72.dp)
                     .graphicsLayer {
