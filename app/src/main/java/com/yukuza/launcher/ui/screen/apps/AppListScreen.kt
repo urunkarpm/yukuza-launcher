@@ -70,6 +70,7 @@ fun AppListScreen(
                         app = app,
                         isFocused = false,
                         onFocus = {},
+                        onLaunch = {},
                         onLongPress = {},
                     )
                 }

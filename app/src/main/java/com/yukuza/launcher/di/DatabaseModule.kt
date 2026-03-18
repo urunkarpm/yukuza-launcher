@@ -17,7 +17,9 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideDatabase(@ApplicationContext ctx: Context): LauncherDatabase =
-        Room.databaseBuilder(ctx, LauncherDatabase::class.java, "launcher.db").build()
+        Room.databaseBuilder(ctx, LauncherDatabase::class.java, "launcher.db")
+            .addMigrations(LauncherDatabase.MIGRATION_1_2)
+            .build()
 
     @Provides
     fun provideAppOrderDao(db: LauncherDatabase) = db.appOrderDao()
@@ -27,4 +29,7 @@ object DatabaseModule {
 
     @Provides
     fun provideWeatherCacheDao(db: LauncherDatabase) = db.weatherCacheDao()
+
+    @Provides
+    fun provideAppLaunchCountDao(db: LauncherDatabase) = db.appLaunchCountDao()
 }

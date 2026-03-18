@@ -21,6 +21,7 @@ fun LauncherNavGraph() {
             HomeScreen(
                 uiState = state,
                 onAppFocused = vm::onAppFocused,
+                onAppLaunched = vm::onAppLaunched,
                 onAppLongPress = { /* App shortcuts overlay — Task 18 */ },
                 onReorder = vm::reorder,
                 onAssistantClick = { },
@@ -29,6 +30,7 @@ fun LauncherNavGraph() {
                 onSeeAllApps = { navController.navigate("apps") },
                 onCityQueryChange = vm::onCityQueryChange,
                 onCitySelected = vm::onCitySelected,
+                onWeatherClick = vm::toggleCityPicker,
             )
         }
         composable("apps") {

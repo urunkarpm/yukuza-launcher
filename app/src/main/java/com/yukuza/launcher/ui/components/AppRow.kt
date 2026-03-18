@@ -2,6 +2,7 @@ package com.yukuza.launcher.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -26,6 +27,7 @@ fun AppRow(
     focusedIndex: Int,
     isEditMode: Boolean,
     onFocus: (Int) -> Unit,
+    onLaunch: (String) -> Unit,
     onReorder: (List<String>) -> Unit,
     onLongPress: (AppInfo) -> Unit,
     modifier: Modifier = Modifier,
@@ -43,6 +45,7 @@ fun AppRow(
         )
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(20.dp),
+            contentPadding = PaddingValues(horizontal = 8.dp),
         ) {
             itemsIndexed(
                 items = if (isEditMode) editList else apps.toList(),
@@ -52,6 +55,7 @@ fun AppRow(
                     app = app,
                     isFocused = focusedIndex == index,
                     onFocus = { onFocus(index) },
+                    onLaunch = { onLaunch(app.packageName) },
                     onLongPress = {
                         if (isEditMode) {
                             // Move focused item one position right in edit mode

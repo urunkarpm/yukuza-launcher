@@ -20,6 +20,7 @@ import com.yukuza.launcher.domain.usecase.GetAppsUseCase
 import com.yukuza.launcher.domain.usecase.GetMediaSessionUseCase
 import com.yukuza.launcher.domain.usecase.GetNetworkSpeedUseCase
 import com.yukuza.launcher.domain.usecase.GetWeatherUseCase
+import com.yukuza.launcher.domain.usecase.IncrementLaunchCountUseCase
 import com.yukuza.launcher.domain.usecase.ReorderAppsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
@@ -44,6 +45,7 @@ data class HomeUiState(
     val isNightMode: Boolean = false,
     val isAmbient: Boolean = false,
     val showSettings: Boolean = false,
+    val showCityPicker: Boolean = false,
     val cityQuery: String = "",
     val citySuggestions: List<GeocodingResult> = emptyList(),
     val cityName: String = "",
@@ -53,6 +55,7 @@ data class HomeUiState(
 class HomeViewModel @Inject constructor(
     private val getApps: GetAppsUseCase,
     private val reorderApps: ReorderAppsUseCase,
+    private val incrementLaunchCount: IncrementLaunchCountUseCase,
     private val getWeather: GetWeatherUseCase,
     private val getAqi: GetAqiUseCase,
     private val getNetwork: GetNetworkSpeedUseCase,
@@ -99,8 +102,9 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun fetchWeatherForLocation(lat: Double, lon: Double) {
+        val cityName = _uiState.value.cityName
         viewModelScope.launch {
-            val weather = getWeather(lat, lon)
+            val weather = getWeather(lat, lon, cityName)
             _uiState.update { it.copy(weather = weather) }
         }
         viewModelScope.launch {
@@ -138,10 +142,12 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onAppFocused(index: Int) = _uiState.update { it.copy(focusedAppIndex = index) }
+    fun onAppLaunched(packageName: String) = viewModelScope.launch { incrementLaunchCount(packageName) }
     fun enterEditMode() = _uiState.update { it.copy(isEditMode = true) }
     fun exitEditMode() = _uiState.update { it.copy(isEditMode = false) }
     fun reorder(packages: List<String>) = viewModelScope.launch { reorderApps(packages) }
     fun setNightMode(enabled: Boolean) = _uiState.update { it.copy(isNightMode = enabled) }
     fun setAmbient(enabled: Boolean) = _uiState.update { it.copy(isAmbient = enabled) }
     fun toggleSettings() = _uiState.update { it.copy(showSettings = !it.showSettings) }
+    fun toggleCityPicker() = _uiState.update { it.copy(showCityPicker = !it.showCityPicker, cityQuery = "", citySuggestions = emptyList()) }
 }

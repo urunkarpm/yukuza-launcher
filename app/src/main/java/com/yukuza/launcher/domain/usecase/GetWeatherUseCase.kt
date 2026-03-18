@@ -5,5 +5,5 @@ import com.yukuza.launcher.domain.model.WeatherData
 import javax.inject.Inject
 
 class GetWeatherUseCase @Inject constructor(private val repo: WeatherRepository) {
-    suspend operator fun invoke(lat: Double, lon: Double): WeatherData = repo.getWeather(lat, lon)
+    suspend operator fun invoke(lat: Double, lon: Double, cityName: String = ""): WeatherData = repo.getWeather(lat, lon, cityName)
 }

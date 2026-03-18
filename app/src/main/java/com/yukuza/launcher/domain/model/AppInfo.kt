@@ -9,4 +9,9 @@ data class AppInfo(
     val label: String,
     val order: Int,
     val dominantColor: Color = Color.White,
-)
+    val isPinned: Boolean = false,
+) {
+    companion object {
+        const val PACKAGE_TV_SETTINGS = "com.android.tv.settings"
+    }
+}

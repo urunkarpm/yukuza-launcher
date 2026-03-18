@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -5,6 +7,9 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
 }
+
+val keystoreProps = Properties()
+rootProject.file("keystore.properties").takeIf { it.exists() }?.inputStream()?.use { keystoreProps.load(it) }
 
 android {
     namespace = "com.yukuza.launcher"
@@ -15,6 +20,22 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+    }
+    signingConfigs {
+        create("release") {
+            storeFile = file(keystoreProps["storeFile"] as String)
+            storePassword = keystoreProps["storePassword"] as String
+            keyAlias = keystoreProps["keyAlias"] as String
+            keyPassword = keystoreProps["keyPassword"] as String
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
     }
     buildFeatures { compose = true; buildConfig = true }
     kotlinOptions { jvmTarget = "17" }

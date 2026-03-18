@@ -1,5 +1,6 @@
 package com.yukuza.launcher.ui.components.widgets
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,11 +20,17 @@ import com.yukuza.launcher.domain.model.WeatherData
 import com.yukuza.launcher.ui.components.glass.GlassCard
 
 @Composable
-fun WeatherWidget(data: WeatherData, modifier: Modifier = Modifier) {
+fun WeatherWidget(
+    data: WeatherData,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     GlassCard(modifier = modifier.padding(8.dp)) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(12.dp),
+            modifier = Modifier
+                .clickable { onClick() }
+                .padding(12.dp),
         ) {
             Column {
                 Text(

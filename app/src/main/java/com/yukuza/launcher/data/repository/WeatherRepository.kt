@@ -2,6 +2,7 @@ package com.yukuza.launcher.data.repository
 
 import com.yukuza.launcher.data.db.WeatherCacheDao
 import com.yukuza.launcher.data.entity.WeatherCacheEntity
+import com.yukuza.launcher.data.remote.AirQualityApi
 import com.yukuza.launcher.data.remote.OpenMeteoApi
 import com.yukuza.launcher.domain.model.AqiData
 import com.yukuza.launcher.domain.model.AqiData.AqiCategory.FAIR
@@ -15,18 +16,18 @@ import javax.inject.Singleton
 
 @Singleton
 class WeatherRepository @Inject constructor(
-    private val api: OpenMeteoApi,
+    private val weatherApi: OpenMeteoApi,
+    private val aqiApi: AirQualityApi,
     private val dao: WeatherCacheDao,
 ) {
-    suspend fun getWeather(lat: Double, lon: Double): WeatherData {
+    suspend fun getWeather(lat: Double, lon: Double, cityName: String = ""): WeatherData {
         return try {
-            val weather = api.getForecast(lat, lon)
-            val aqi = api.getAirQuality(lat, lon)
+            val weather = weatherApi.getForecast(lat, lon)
             val entity = WeatherCacheEntity(
                 tempCelsius = weather.current.tempCelsius,
                 conditionCode = weather.current.weatherCode,
-                locationName = "Current Location",
-                europeanAqi = aqi.current.europeanAqi,
+                locationName = cityName.ifBlank { "Current Location" },
+                europeanAqi = dao.get()?.europeanAqi ?: 0,
                 fetchedAt = System.currentTimeMillis(),
             )
             dao.upsert(entity)
@@ -38,10 +39,15 @@ class WeatherRepository @Inject constructor(
 
     suspend fun getAqi(lat: Double, lon: Double): AqiData {
         return try {
-            val aqi = api.getAirQuality(lat, lon)
+            val aqi = aqiApi.getAirQuality(lat, lon)
+            val europeanAqi = aqi.current.europeanAqi
+            // Update cached aqi value
+            dao.get()?.let { cached ->
+                dao.upsert(cached.copy(europeanAqi = europeanAqi))
+            }
             AqiData(
-                europeanAqi = aqi.current.europeanAqi,
-                category = aqiToCategory(aqi.current.europeanAqi),
+                europeanAqi = europeanAqi,
+                category = aqiToCategory(europeanAqi),
                 fetchedAt = System.currentTimeMillis(),
                 isStale = false,
             )
@@ -80,7 +86,6 @@ class WeatherRepository @Inject constructor(
     }
 }
 
-// Extension functions for mapping
 fun WeatherCacheEntity.toDomain(isStale: Boolean): WeatherData = WeatherData(
     tempCelsius = tempCelsius,
     conditionCode = conditionCode,
