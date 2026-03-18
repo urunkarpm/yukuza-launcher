@@ -1,9 +1,14 @@
 package com.yukuza.launcher.ui.overlay
 
+import android.app.role.RoleManager
 import android.content.Context
+import android.content.Intent
 import android.media.AudioManager
 import android.os.Build
 import android.provider.Settings
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -62,6 +67,9 @@ fun QuickSettingsOverlay(
                 ) {
                     BrightnessSlider(context)
                 }
+
+                // Set as Default Launcher
+                SetDefaultLauncherRow()
 
                 // Night Mode toggle
                 Row(
@@ -195,6 +203,47 @@ private fun GameModeButton(context: Context) {
         Text("Game Mode", color = Color.White, modifier = Modifier.weight(1f))
         Spacer(Modifier.width(8.dp))
         Text("HDMI-CEC required", color = Color.White.copy(alpha = 0.4f))
+    }
+}
+
+@Composable
+private fun SetDefaultLauncherRow() {
+    val context = LocalContext.current
+    val launcher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { /* result handled by system */ }
+
+    val isDefault = remember {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val rm = context.getSystemService(RoleManager::class.java)
+            rm.isRoleHeld(RoleManager.ROLE_HOME)
+        } else false
+    }
+
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .clickable {
+                val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    val rm = context.getSystemService(RoleManager::class.java)
+                    rm.createRequestRoleIntent(RoleManager.ROLE_HOME)
+                } else {
+                    Intent(Settings.ACTION_HOME_SETTINGS)
+                }
+                launcher.launch(intent)
+            }
+            .padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = if (isDefault) "✓ Default Launcher" else "Set as Default Launcher",
+            color = if (isDefault) Color(0xFF4CAF50) else Color.White,
+            modifier = Modifier.weight(1f),
+        )
+        Text(
+            text = if (isDefault) "Active" else "Tap to set →",
+            color = Color.White.copy(alpha = 0.5f),
+        )
     }
 }
 

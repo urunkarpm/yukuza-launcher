@@ -35,6 +35,7 @@ data class HomeUiState(
     val isEditMode: Boolean = false,
     val isNightMode: Boolean = false,
     val isAmbient: Boolean = false,
+    val showSettings: Boolean = false,
 )
 
 @HiltViewModel
@@ -86,4 +87,5 @@ class HomeViewModel @Inject constructor(
     fun reorder(packages: List<String>) = viewModelScope.launch { reorderApps(packages) }
     fun setNightMode(enabled: Boolean) = _uiState.update { it.copy(isNightMode = enabled) }
     fun setAmbient(enabled: Boolean) = _uiState.update { it.copy(isAmbient = enabled) }
+    fun toggleSettings() = _uiState.update { it.copy(showSettings = !it.showSettings) }
 }

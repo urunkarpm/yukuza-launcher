@@ -23,8 +23,9 @@ fun LauncherNavGraph() {
                 onAppFocused = vm::onAppFocused,
                 onAppLongPress = { /* App shortcuts overlay — Task 18 */ },
                 onReorder = vm::reorder,
-                onAssistantClick = { /* handled inside AssistantButton */ },
-                onNetworkClick = { /* handled inside NetworkWidget */ },
+                onAssistantClick = { },
+                onNetworkClick = { },
+                onSettingsToggle = vm::toggleSettings,
                 onSeeAllApps = { navController.navigate("apps") },
             )
         }

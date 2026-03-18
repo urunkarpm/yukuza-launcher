@@ -3,13 +3,19 @@ package com.yukuza.launcher.ui.screen.home
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.yukuza.launcher.domain.model.AppInfo
 import com.yukuza.launcher.ui.components.AppRow
 import com.yukuza.launcher.ui.components.aurora.AuroraBackground
+import com.yukuza.launcher.ui.overlay.QuickSettingsOverlay
 import com.yukuza.launcher.ui.components.widgets.AqiWidget
 import com.yukuza.launcher.ui.components.widgets.ClockWidget
 import com.yukuza.launcher.ui.components.widgets.NetworkWidget
@@ -35,6 +42,7 @@ fun HomeScreen(
     onReorder: (List<String>) -> Unit,
     onAssistantClick: () -> Unit,
     onNetworkClick: () -> Unit,
+    onSettingsToggle: () -> Unit = {},
     onSeeAllApps: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
@@ -50,7 +58,7 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(horizontal = 40.dp),
         ) {
-            // Top bar — 3 equal-weight columns prevent overlap
+            // Top bar — clock left, widgets right, flexible gap in between
             Row(
                 Modifier
                     .align(Alignment.TopStart)
@@ -58,25 +66,29 @@ fun HomeScreen(
                     .padding(top = 32.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                // Left: Clock
-                Row(
-                    Modifier.weight(1f),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) { ClockWidget() }
+                // Left: Clock (natural width)
+                ClockWidget()
 
-                // Center: spacer to keep layout balanced
-                Box(Modifier.weight(1f))
+                // Flexible gap
+                Spacer(Modifier.weight(1f))
 
-                // Right: Weather, AQI, Screen Timer, Network
+                // Right: Weather, AQI, Screen Timer, Network, Settings
                 Row(
-                    Modifier.weight(1f),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     uiState.weather?.let { WeatherWidget(it) }
                     uiState.aqi?.let { AqiWidget(it) }
                     ScreenTimerWidget()
                     uiState.network?.let { NetworkWidget(it) }
+                    Icon(
+                        imageVector = Icons.Default.Settings,
+                        contentDescription = "Settings",
+                        tint = Color.White.copy(alpha = 0.6f),
+                        modifier = Modifier
+                            .size(22.dp)
+                            .clickable { onSettingsToggle() },
+                    )
                 }
             }
 
@@ -110,6 +122,15 @@ fun HomeScreen(
                     onLongPress = onAppLongPress,
                 )
             }
+        }
+
+        // Quick settings overlay
+        if (uiState.showSettings) {
+            QuickSettingsOverlay(
+                onDismiss = onSettingsToggle,
+                isNightMode = uiState.isNightMode,
+                onNightModeToggle = { },
+            )
         }
     }
 }
