@@ -33,6 +33,8 @@ data class HomeUiState(
     val nowPlaying: MediaData? = null,
     val focusedAppIndex: Int = 0,
     val isEditMode: Boolean = false,
+    val isNightMode: Boolean = false,
+    val isAmbient: Boolean = false,
 )
 
 @HiltViewModel
@@ -82,4 +84,6 @@ class HomeViewModel @Inject constructor(
     fun enterEditMode() = _uiState.update { it.copy(isEditMode = true) }
     fun exitEditMode() = _uiState.update { it.copy(isEditMode = false) }
     fun reorder(packages: List<String>) = viewModelScope.launch { reorderApps(packages) }
+    fun setNightMode(enabled: Boolean) = _uiState.update { it.copy(isNightMode = enabled) }
+    fun setAmbient(enabled: Boolean) = _uiState.update { it.copy(isAmbient = enabled) }
 }
