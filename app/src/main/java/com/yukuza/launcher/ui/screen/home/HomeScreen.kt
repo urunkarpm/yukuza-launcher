@@ -19,7 +19,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.yukuza.launcher.domain.model.AppInfo
 import com.yukuza.launcher.ui.components.AppRow
-import com.yukuza.launcher.ui.components.AssistantButton
 import com.yukuza.launcher.ui.components.aurora.AuroraBackground
 import com.yukuza.launcher.ui.components.widgets.AqiWidget
 import com.yukuza.launcher.ui.components.widgets.ClockWidget
@@ -65,11 +64,8 @@ fun HomeScreen(
                     verticalAlignment = Alignment.CenterVertically,
                 ) { ClockWidget() }
 
-                // Center: Assistant G button
-                Box(
-                    Modifier.weight(1f),
-                    contentAlignment = Alignment.Center,
-                ) { AssistantButton() }
+                // Center: spacer to keep layout balanced
+                Box(Modifier.weight(1f))
 
                 // Right: Weather, AQI, Screen Timer, Network
                 Row(
