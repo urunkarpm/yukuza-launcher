@@ -151,6 +151,13 @@ private fun launchApp(context: Context, packageName: String) {
         })
         return
     }
-    val intent = context.packageManager.getLaunchIntentForPackage(packageName)
+    val pm = context.packageManager
+    // TV apps register LEANBACK_LAUNCHER instead of (or alongside) LAUNCHER
+    val intent = pm.getLaunchIntentForPackage(packageName)
+        ?: Intent(Intent.ACTION_MAIN).apply {
+            addCategory(Intent.CATEGORY_LEANBACK_LAUNCHER)
+            setPackage(packageName)
+        }.takeIf { pm.resolveActivity(it, 0) != null }
+    intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     intent?.let { context.startActivity(it) }
 }
