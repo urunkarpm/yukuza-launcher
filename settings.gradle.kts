@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "YukuzaLauncher"
 include(":app")
+include(":macrobenchmark")

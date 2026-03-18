@@ -71,6 +71,9 @@ dependencies {
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
 
+    // Baseline Profile installer (ART pre-compilation)
+    implementation(libs.profileinstaller)
+
     // Testing
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
