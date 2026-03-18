@@ -144,15 +144,30 @@ keytool -genkey -v -keystore your-keystore.jks -alias your_alias \
 
 ### Set as Default Launcher
 
-Most Android TV devices don't offer a built-in launcher picker. The easiest method is to use **Launch Manager for Android TV**:
+Most Android TV devices don't offer a built-in launcher picker. Follow these steps:
 
-1. Download `Launch Manager - Android TV_1.0.3_APKPure.apk` from the [releases page](https://github.com/urunkarpm/yukuza-launcher/releases/tag/v1.0.0)
-2. Install it on your TV:
-   ```bash
-   adb install "Launch Manager - Android TV_1.0.3_APKPure.apk"
-   ```
-3. Open **Launch Manager** on your TV
-4. Select **Yukuza Launcher** as the default home app
+**Step 1 — Transfer APKs to your TV using [LocalSend](https://localsend.org)**
+
+LocalSend is a free, open-source app that lets you wirelessly send files between devices on the same Wi-Fi network — no cables, no account required.
+
+1. Install **LocalSend** on both your phone/PC and your Android TV
+2. Download both APKs from the [releases page](https://github.com/urunkarpm/yukuza-launcher/releases/tag/v1.0.0):
+   - `yukuza-launcher-v1.0.0.apk`
+   - `Launch Manager - Android TV_1.0.3_APKPure.apk`
+3. Open LocalSend on your phone/PC, select both APK files, and send them to your TV
+4. Accept the transfer on your TV — files will be saved to local storage
+
+**Step 2 — Install Launch Manager first**
+
+Open a file manager on your TV, navigate to the downloaded `Launch Manager - Android TV_1.0.3_APKPure.apk` and install it.
+
+**Step 3 — Install Yukuza Launcher**
+
+In the same file manager, install `yukuza-launcher-v1.0.0.apk`.
+
+**Step 4 — Set as default**
+
+Open **Launch Manager** on your TV and select **Yukuza Launcher** as the default home app.
 
 > **Alternative (stock Android TV):** Settings → Device Preferences → Home screen → Home app → Yukuza Launcher *(only available on some devices)*
 
