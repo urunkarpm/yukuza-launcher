@@ -51,35 +51,37 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(horizontal = 40.dp),
         ) {
-            // Top-left: Clock
+            // Top bar — 3 equal-weight columns prevent overlap
             Row(
                 Modifier
                     .align(Alignment.TopStart)
+                    .fillMaxWidth()
                     .padding(top = 32.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                ClockWidget()
-            }
+                // Left: Clock
+                Row(
+                    Modifier.weight(1f),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) { ClockWidget() }
 
-            // Top-center: Assistant G button
-            AssistantButton(
-                Modifier
-                    .align(Alignment.TopCenter)
-                    .padding(top = 32.dp),
-            )
+                // Center: Assistant G button
+                Box(
+                    Modifier.weight(1f),
+                    contentAlignment = Alignment.Center,
+                ) { AssistantButton() }
 
-            // Top-right: Weather, AQI, Screen Timer, Network
-            Row(
-                Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(top = 32.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                uiState.weather?.let { WeatherWidget(it) }
-                uiState.aqi?.let { AqiWidget(it) }
-                ScreenTimerWidget()
-                uiState.network?.let { NetworkWidget(it) }
+                // Right: Weather, AQI, Screen Timer, Network
+                Row(
+                    Modifier.weight(1f),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    uiState.weather?.let { WeatherWidget(it) }
+                    uiState.aqi?.let { AqiWidget(it) }
+                    ScreenTimerWidget()
+                    uiState.network?.let { NetworkWidget(it) }
+                }
             }
 
             // Center: Now Playing widget (only when media active)

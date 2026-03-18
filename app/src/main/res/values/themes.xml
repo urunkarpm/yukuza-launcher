@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.YukuzaLauncher" parent="@android:style/Theme.DeviceDefault" />
+    <style name="Theme.YukuzaLauncher" parent="@android:style/Theme.DeviceDefault.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
 </resources>

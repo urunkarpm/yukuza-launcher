@@ -1,7 +1,9 @@
 package com.yukuza.launcher.data.repository
 
-import android.content.pm.ApplicationInfo
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import com.yukuza.launcher.data.db.AppColorCacheDao
@@ -16,20 +18,28 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class AppRepository @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val pm: PackageManager,
     private val appOrderDao: AppOrderDao,
     private val colorCacheDao: AppColorCacheDao,
 ) {
+    private fun queryLaunchableApps(): Map<String, ResolveInfo> {
+        val leanback = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LEANBACK_LAUNCHER)
+        val standard = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
+        return (pm.queryIntentActivities(leanback, 0) + pm.queryIntentActivities(standard, 0))
+            .filter { it.activityInfo.packageName != context.packageName }
+            .associateBy { it.activityInfo.packageName }
+    }
+
     fun getApps(): Flow<ImmutableList<AppInfo>> =
         appOrderDao.getAll().map { storedOrder ->
-            val installed = pm.getInstalledApplications(PackageManager.GET_META_DATA)
-                .filter { it.flags and ApplicationInfo.FLAG_SYSTEM == 0 }
-                .associateBy { it.packageName }
+            val installed = queryLaunchableApps()
 
             val orderedPackages = storedOrder.map { it.packageName }
             val newPackages = installed.keys.filter { it !in orderedPackages }
@@ -37,11 +47,11 @@ class AppRepository @Inject constructor(
             (orderedPackages + newPackages)
                 .filter { it in installed }
                 .mapIndexed { index, pkg ->
-                    val info = installed[pkg]!!
+                    val resolveInfo = installed[pkg]!!
                     val color = colorCacheDao.get(pkg)?.let { Color(it.dominantColor) } ?: Color.White
                     AppInfo(
                         packageName = pkg,
-                        label = pm.getApplicationLabel(info).toString(),
+                        label = resolveInfo.loadLabel(pm).toString(),
                         order = index,
                         dominantColor = color,
                     )
