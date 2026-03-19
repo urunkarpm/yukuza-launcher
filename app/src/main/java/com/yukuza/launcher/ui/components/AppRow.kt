@@ -60,7 +60,7 @@ fun AppRow(
         )
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(20.dp),
-            contentPadding = PaddingValues(horizontal = 8.dp),
+            contentPadding = PaddingValues(horizontal = 12.dp),
         ) {
             itemsIndexed(
                 items = if (isEditMode) editList else apps.toList(),

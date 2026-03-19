@@ -23,8 +23,8 @@ fun ScreenTimerWidget(modifier: Modifier = Modifier) {
     }
     val minutes = seconds / 60
     val secs = seconds % 60
-    GlassCard(modifier = modifier.padding(8.dp)) {
-        Column(modifier = Modifier.padding(12.dp)) {
+    GlassCard(modifier = modifier) {
+        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp)) {
             Text(
                 text = androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.screen_timer_format, minutes, secs),
                 style = MaterialTheme.typography.bodyMedium,

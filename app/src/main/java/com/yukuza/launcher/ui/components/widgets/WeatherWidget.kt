@@ -25,12 +25,12 @@ fun WeatherWidget(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    GlassCard(modifier = modifier.padding(8.dp)) {
+    GlassCard(modifier = modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .clickable { onClick() }
-                .padding(12.dp),
+                .padding(horizontal = 16.dp, vertical = 14.dp),
         ) {
             Column {
                 Text(

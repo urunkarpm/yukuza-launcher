@@ -62,13 +62,13 @@ fun HomeScreen(
                 Modifier
                     .align(Alignment.TopStart)
                     .fillMaxWidth()
-                    .padding(top = 32.dp),
+                    .padding(top = 36.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 ClockWidget()
                 Spacer(Modifier.weight(1f))
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     uiState.weather?.let { WeatherWidget(it, onClick = onWeatherClick) }
@@ -97,7 +97,7 @@ fun HomeScreen(
                         ),
                         RectangleShape,
                     )
-                    .padding(horizontal = 40.dp, vertical = 16.dp),
+                    .padding(horizontal = 40.dp, vertical = 20.dp),
             ) {
                 AppRow(
                     apps = uiState.apps,

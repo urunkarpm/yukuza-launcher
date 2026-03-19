@@ -62,8 +62,8 @@ fun AppListScreen(
             Spacer(Modifier.height(24.dp))
             TvLazyVerticalGrid(
                 columns = TvGridCells.Fixed(columns),
-                horizontalArrangement = Arrangement.spacedBy(20.dp),
-                verticalArrangement = Arrangement.spacedBy(20.dp),
+                horizontalArrangement = Arrangement.spacedBy(24.dp),
+                verticalArrangement = Arrangement.spacedBy(24.dp),
                 modifier = Modifier.semantics { isTraversalGroup = true },
             ) {
                 items(apps, key = { it.packageName }) { app ->

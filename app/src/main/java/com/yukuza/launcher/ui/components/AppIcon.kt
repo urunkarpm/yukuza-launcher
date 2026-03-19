@@ -125,7 +125,7 @@ fun AppIcon(
                     .clip(RoundedCornerShape(14.dp)),
             )
         }
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(8.dp))
         Text(
             text = app.label,
             style = MaterialTheme.typography.labelSmall,
