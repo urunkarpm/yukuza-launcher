@@ -22,13 +22,20 @@ fun AqiWidget(data: AqiData, modifier: Modifier = Modifier) {
     }
     GlassCard(modifier = modifier.padding(8.dp)) {
         Column(modifier = Modifier.padding(12.dp)) {
+            val categoryNameRes = when (data.category) {
+                AqiData.AqiCategory.GOOD -> com.yukuza.launcher.R.string.aqi_good
+                AqiData.AqiCategory.FAIR -> com.yukuza.launcher.R.string.aqi_fair
+                AqiData.AqiCategory.MODERATE -> com.yukuza.launcher.R.string.aqi_moderate
+                AqiData.AqiCategory.POOR -> com.yukuza.launcher.R.string.aqi_poor
+                AqiData.AqiCategory.VERY_POOR -> com.yukuza.launcher.R.string.aqi_very_poor
+            }
             Text(
-                text = "AQI ${data.europeanAqi}",
+                text = androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.aqi_value, data.europeanAqi),
                 style = MaterialTheme.typography.bodyMedium,
                 color = categoryColor,
             )
             Text(
-                text = data.category.name.replace('_', ' '),
+                text = androidx.compose.ui.res.stringResource(categoryNameRes),
                 style = MaterialTheme.typography.labelSmall,
                 color = categoryColor.copy(0.7f),
             )

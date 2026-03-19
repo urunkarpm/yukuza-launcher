@@ -58,7 +58,7 @@ fun CityPickerPopup(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 Text(
-                    text = if (cityName.isNotBlank()) "City: $cityName" else "Select city",
+                    text = if (cityName.isNotBlank()) androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.city_selected_format, cityName) else androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.select_city),
                     color = Color.White.copy(alpha = 0.7f),
                     style = MaterialTheme.typography.labelSmall,
                 )
@@ -66,7 +66,7 @@ fun CityPickerPopup(
                 OutlinedTextField(
                     value = cityQuery,
                     onValueChange = onCityQueryChange,
-                    placeholder = { Text("Search city…", color = Color.White.copy(0.4f)) },
+                    placeholder = { Text(androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.search_city_placeholder), color = Color.White.copy(0.4f)) },
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = Color.White,

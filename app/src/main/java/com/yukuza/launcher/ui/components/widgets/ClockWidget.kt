@@ -30,9 +30,10 @@ fun ClockWidget(modifier: Modifier = Modifier) {
             delay(10_000)
         }
     }
-    val timeFormatter = remember { DateTimeFormatter.ofPattern("h:mm") }
-    val ampm = if (time.hour < 12) "AM" else "PM"
-    val today = remember { LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE · d MMMM yyyy")) }
+    val timeFormatter = remember { DateTimeFormatter.ofPattern("h:mm", java.util.Locale.getDefault()) }
+    val ampmFormatter = remember { DateTimeFormatter.ofPattern("a", java.util.Locale.getDefault()) }
+    val ampm = time.format(ampmFormatter)
+    val today = remember { LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE · d MMMM yyyy", java.util.Locale.getDefault())) }
 
     GlassCard(modifier = modifier.padding(horizontal = 16.dp, vertical = 10.dp)) {
         Column(modifier = Modifier.padding(12.dp)) {

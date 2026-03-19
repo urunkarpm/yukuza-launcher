@@ -26,16 +26,16 @@ fun NetworkWidget(data: NetworkData, modifier: Modifier = Modifier) {
             .clickable {
                 context.startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
             }
-            .semantics { contentDescription = "Network speed, tap for WiFi settings" },
+            .semantics { contentDescription = context.getString(com.yukuza.launcher.R.string.network_content_description) },
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(
-                text = "%.0f Mb/s".format(data.speedMbps),
+                text = androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.network_speed_format, data.speedMbps),
                 style = MaterialTheme.typography.bodyMedium,
                 color = if (data.isConnected) Color.White else Color.Red.copy(0.7f),
             )
             Text(
-                text = if (data.isConnected) "Wi-Fi" else "Offline",
+                text = if (data.isConnected) androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.network_wifi) else androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.network_offline),
                 style = MaterialTheme.typography.labelSmall,
                 color = Color.White.copy(0.5f),
             )

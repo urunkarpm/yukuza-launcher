@@ -30,11 +30,11 @@ private data class BlobDef(
 )
 
 private val blobs = listOf(
-    BlobDef(Color(0xFF8C32FF).copy(alpha = 0.82f), Offset(0.08f, 0.28f), Offset(0.06f,  0.04f), 0.58f, 2.2f, 20000),
-    BlobDef(Color(0xFFE628A0).copy(alpha = 0.72f), Offset(0.78f, 0.18f), Offset(-0.07f, 0.05f), 0.50f, 1.8f, 17000),
-    BlobDef(Color(0xFF3C64FF).copy(alpha = 0.68f), Offset(0.48f, 0.68f), Offset(0.05f, -0.06f), 0.52f, 2.4f, 22000),
-    BlobDef(Color(0xFF00B4DC).copy(alpha = 0.58f), Offset(0.20f, 0.72f), Offset(0.07f, -0.04f), 0.44f, 1.9f, 16000),
-    BlobDef(Color(0xFFB43CFF).copy(alpha = 0.52f), Offset(0.62f, 0.48f), Offset(-0.05f, 0.06f), 0.40f, 2.0f, 19000),
+    BlobDef(Color(0xFF8C32FF).copy(alpha = 0.42f), Offset(0.08f, 0.28f), Offset(0.06f,  0.04f), 0.58f, 2.2f, 20000),
+    BlobDef(Color(0xFFE628A0).copy(alpha = 0.34f), Offset(0.78f, 0.18f), Offset(-0.07f, 0.05f), 0.50f, 1.8f, 17000),
+    BlobDef(Color(0xFF3C64FF).copy(alpha = 0.32f), Offset(0.48f, 0.68f), Offset(0.05f, -0.06f), 0.52f, 2.4f, 22000),
+    BlobDef(Color(0xFF00B4DC).copy(alpha = 0.26f), Offset(0.20f, 0.72f), Offset(0.07f, -0.04f), 0.44f, 1.9f, 16000),
+    BlobDef(Color(0xFFB43CFF).copy(alpha = 0.24f), Offset(0.62f, 0.48f), Offset(-0.05f, 0.06f), 0.40f, 2.0f, 19000),
 )
 
 @Composable
@@ -91,8 +91,8 @@ fun AuroraBackground(modifier: Modifier = Modifier) {
             brush = Brush.radialGradient(
                 colorStops = arrayOf(
                     0.00f to Color.Transparent,
-                    0.55f to Color(0x28060210),
-                    1.00f to Color(0xD0060210),
+                    0.45f to Color(0x50060210),
+                    1.00f to Color(0xE8060210),
                 ),
                 radius = size.maxDimension * 0.70f,
             ),

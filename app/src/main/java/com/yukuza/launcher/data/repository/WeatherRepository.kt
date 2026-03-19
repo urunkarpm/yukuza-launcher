@@ -64,16 +64,17 @@ class WeatherRepository @Inject constructor(
     }
 
     companion object {
-        fun wmoCodeToDescription(code: Int): String = when (code) {
-            0 -> "Clear Sky"
-            1 -> "Mainly Clear"
-            2 -> "Partly Cloudy"
-            3 -> "Overcast"
-            in 51..55 -> "Drizzle"
-            in 61..65 -> "Rain"
-            in 71..75 -> "Snow"
-            in 95..99 -> "Thunderstorm"
-            else -> "Unknown"
+        @androidx.annotation.StringRes
+        fun wmoCodeToDescription(code: Int): Int = when (code) {
+            0 -> com.yukuza.launcher.R.string.weather_clear_sky
+            1 -> com.yukuza.launcher.R.string.weather_mainly_clear
+            2 -> com.yukuza.launcher.R.string.weather_partly_cloudy
+            3 -> com.yukuza.launcher.R.string.weather_overcast
+            in 51..55 -> com.yukuza.launcher.R.string.weather_drizzle
+            in 61..65 -> com.yukuza.launcher.R.string.weather_rain
+            in 71..75 -> com.yukuza.launcher.R.string.weather_snow
+            in 95..99 -> com.yukuza.launcher.R.string.weather_thunderstorm
+            else -> com.yukuza.launcher.R.string.weather_unknown
         }
 
         fun aqiToCategory(aqi: Int): AqiData.AqiCategory = when {

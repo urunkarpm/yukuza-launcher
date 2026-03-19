@@ -39,7 +39,7 @@ fun WeatherWidget(
                     color = Color.White,
                 )
                 Text(
-                    text = WeatherRepository.wmoCodeToDescription(data.conditionCode),
+                    text = androidx.compose.ui.res.stringResource(WeatherRepository.wmoCodeToDescription(data.conditionCode)),
                     style = MaterialTheme.typography.labelSmall,
                     color = Color.White.copy(0.6f),
                 )

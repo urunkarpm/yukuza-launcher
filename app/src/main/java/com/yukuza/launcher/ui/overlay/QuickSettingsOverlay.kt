@@ -92,10 +92,10 @@ fun QuickSettingsOverlay(
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .semantics { contentDescription = "Night Mode" },
+                        .semantics { contentDescription = context.getString(com.yukuza.launcher.R.string.night_mode) },
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text("Night Mode", color = Color.White, modifier = Modifier.weight(1f))
+                    Text(androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.night_mode), color = Color.White, modifier = Modifier.weight(1f))
                     Switch(
                         checked = isNightMode,
                         onCheckedChange = { onNightModeToggle() },
@@ -140,7 +140,7 @@ private fun VolumeSlider(context: Context) {
         mutableFloatStateOf(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC).toFloat())
     }
     Column {
-        Text("Volume", color = Color.White.copy(alpha = 0.7f))
+        Text(androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.volume), color = Color.White.copy(alpha = 0.7f))
         Slider(
             value = volume,
             onValueChange = { v ->
@@ -167,7 +167,7 @@ private fun BrightnessSlider(context: Context) {
         )
     }
     Column {
-        Text("Brightness", color = Color.White.copy(alpha = 0.7f))
+        Text(androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.brightness), color = Color.White.copy(alpha = 0.7f))
         Slider(
             value = brightness,
             onValueChange = { b ->
@@ -199,13 +199,14 @@ private fun BluetoothToggle() {
     }
     if (btAdapter != null) {
         var btEnabled by remember { mutableStateOf(btAdapter.isEnabled) }
+        val bluetoothLabel = androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.bluetooth)
         Row(
             Modifier
                 .fillMaxWidth()
-                .semantics { contentDescription = "Bluetooth" },
+                .semantics { contentDescription = bluetoothLabel },
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text("Bluetooth", color = Color.White, modifier = Modifier.weight(1f))
+            Text(androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.bluetooth), color = Color.White, modifier = Modifier.weight(1f))
             Switch(
                 checked = btEnabled,
                 onCheckedChange = { enabled ->
@@ -229,9 +230,9 @@ private fun GameModeButton() {
         Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text("Game Mode", color = Color.White, modifier = Modifier.weight(1f))
+        Text(androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.game_mode), color = Color.White, modifier = Modifier.weight(1f))
         Spacer(Modifier.width(8.dp))
-        Text("HDMI-CEC required", color = Color.White.copy(alpha = 0.4f))
+        Text(androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.hdmi_cec_required), color = Color.White.copy(alpha = 0.4f))
     }
 }
 
@@ -241,9 +242,9 @@ private fun InputSourceButton() {
         Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text("Input Source", color = Color.White, modifier = Modifier.weight(1f))
+        Text(androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.input_source_title), color = Color.White, modifier = Modifier.weight(1f))
         Spacer(Modifier.width(8.dp))
-        Text("HDMI-CEC required", color = Color.White.copy(alpha = 0.4f))
+        Text(androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.hdmi_cec_required), color = Color.White.copy(alpha = 0.4f))
     }
 }
 
@@ -273,7 +274,7 @@ private fun CityDropdown(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = if (cityName.isNotBlank()) cityName else "Select city…",
+                text = if (cityName.isNotBlank()) cityName else androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.select_city),
                 color = if (cityName.isNotBlank()) Color.White else Color.White.copy(alpha = 0.4f),
                 modifier = Modifier.weight(1f),
             )
@@ -295,7 +296,7 @@ private fun CityDropdown(
                 OutlinedTextField(
                     value = cityQuery,
                     onValueChange = onQueryChange,
-                    placeholder = { Text("Search city…", color = Color.White.copy(0.4f)) },
+                    placeholder = { Text(androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.search_city_placeholder), color = Color.White.copy(0.4f)) },
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = Color.White,

@@ -1,10 +1,12 @@
 package com.yukuza.launcher.ui.components
 
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.provider.Settings
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -42,9 +44,8 @@ import coil.request.ImageRequest
 import com.yukuza.launcher.domain.model.AppInfo
 import com.yukuza.launcher.domain.model.AppInfo.Companion.PACKAGE_TV_SETTINGS
 
-private val FocusEasing = FastOutSlowInEasing
-private const val FOCUS_DURATION = 180
-private const val UNFOCUS_DURATION = 80
+private val ScaleEasing = FastOutSlowInEasing
+private const val SCALE_DURATION = 100
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -58,27 +59,24 @@ fun AppIcon(
 ) {
     val context = LocalContext.current
 
-    val focusSpec = tween<Float>(durationMillis = FOCUS_DURATION, easing = FocusEasing)
-    val unfocusSpec = tween<Float>(durationMillis = UNFOCUS_DURATION, easing = FocusEasing)
-
     val scale by animateFloatAsState(
         targetValue = if (isFocused) 1.18f else 1f,
-        animationSpec = if (isFocused) focusSpec else unfocusSpec,
+        animationSpec = tween(durationMillis = SCALE_DURATION, easing = ScaleEasing),
         label = "scale",
     )
     val saturation by animateFloatAsState(
         targetValue = if (isFocused) 1f else 0f,
-        animationSpec = if (isFocused) focusSpec else unfocusSpec,
+        animationSpec = snap(),
         label = "saturation",
     )
     val ringAlpha by animateFloatAsState(
         targetValue = if (isFocused) 1f else 0f,
-        animationSpec = if (isFocused) focusSpec else unfocusSpec,
+        animationSpec = snap(),
         label = "ringAlpha",
     )
     val labelAlpha by animateFloatAsState(
         targetValue = if (isFocused) 1f else 0.5f,
-        animationSpec = if (isFocused) focusSpec else unfocusSpec,
+        animationSpec = snap(),
         label = "labelAlpha",
     )
 
@@ -92,7 +90,7 @@ fun AppIcon(
                 onClick = { onLaunch(); launchApp(context, app.packageName) },
                 onLongClick = onLongPress,
             )
-            .semantics { contentDescription = "${app.label}, app icon" },
+            .semantics { contentDescription = context.getString(com.yukuza.launcher.R.string.app_icon_content_description, app.label) },
     ) {
         Box(
             contentAlignment = Alignment.Center,
@@ -152,12 +150,18 @@ private fun launchApp(context: Context, packageName: String) {
         return
     }
     val pm = context.packageManager
-    // TV apps register LEANBACK_LAUNCHER instead of (or alongside) LAUNCHER
-    val intent = pm.getLaunchIntentForPackage(packageName)
-        ?: Intent(Intent.ACTION_MAIN).apply {
-            addCategory(Intent.CATEGORY_LEANBACK_LAUNCHER)
-            setPackage(packageName)
-        }.takeIf { pm.resolveActivity(it, 0) != null }
-    intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+    fun buildExplicitIntent(category: String): Intent? {
+        val query = Intent(Intent.ACTION_MAIN).addCategory(category).setPackage(packageName)
+        val ri = pm.resolveActivity(query, 0) ?: return null
+        return Intent(Intent.ACTION_MAIN).apply {
+            component = ComponentName(ri.activityInfo.packageName, ri.activityInfo.name)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
+        }
+    }
+
+    // Prefer the TV (Leanback) entry point; fall back to the standard launcher activity
+    val intent = buildExplicitIntent(Intent.CATEGORY_LEANBACK_LAUNCHER)
+        ?: buildExplicitIntent(Intent.CATEGORY_LAUNCHER)
     intent?.let { context.startActivity(it) }
 }

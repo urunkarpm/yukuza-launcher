@@ -30,10 +30,10 @@ fun InputSourceOverlay(
     ) {
         GlassCard(modifier = Modifier.padding(8.dp)) {
             Column(modifier = Modifier.padding(16.dp)) {
-                Text("Select Input Source", color = Color.White)
+                Text(androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.input_source_title), color = Color.White)
                 if (sources.isEmpty()) {
                     Text(
-                        "No HDMI-CEC sources available",
+                        androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.no_hdmi_sources),
                         color = Color.White.copy(alpha = 0.5f),
                         modifier = Modifier.padding(top = 8.dp),
                     )

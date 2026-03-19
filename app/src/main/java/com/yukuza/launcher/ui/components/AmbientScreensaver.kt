@@ -28,8 +28,8 @@ fun AmbientScreensaver(
             delay(10_000)
         }
     }
-    val timeFormatter = java.time.format.DateTimeFormatter.ofPattern("h:mm")
-    val ampm = if (time.hour < 12) "AM" else "PM"
+    val timeFormatter = java.time.format.DateTimeFormatter.ofPattern("h:mm", java.util.Locale.getDefault())
+    val ampmFormatter = java.time.format.DateTimeFormatter.ofPattern("a", java.util.Locale.getDefault())
 
     Box(
         modifier = modifier
@@ -37,7 +37,7 @@ fun AmbientScreensaver(
     ) {
         AuroraBackground()
         Text(
-            text = "${time.format(timeFormatter)} $ampm",
+            text = "${time.format(timeFormatter)} ${time.format(ampmFormatter)}",
             style = MaterialTheme.typography.displayLarge,
             color = Color.White.copy(alpha = 0.85f),
             modifier = Modifier

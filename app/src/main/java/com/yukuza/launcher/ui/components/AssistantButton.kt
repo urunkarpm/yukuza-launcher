@@ -51,7 +51,7 @@ fun AssistantButton(modifier: Modifier = Modifier) {
                 shape = CircleShape,
             )
             .clickable { launchAssistant(context) }
-            .semantics { contentDescription = "Google Assistant" },
+            .semantics { contentDescription = context.getString(com.yukuza.launcher.R.string.google_assistant_content_description) },
     ) {
         Icon(
             imageVector = glassGIcon(),
@@ -70,5 +70,5 @@ private fun launchAssistant(context: Context) {
     )
     intents.firstOrNull { it.resolveActivity(context.packageManager) != null }
         ?.let { context.startActivity(it) }
-        ?: Toast.makeText(context, "Voice assistant not available", Toast.LENGTH_SHORT).show()
+        ?: Toast.makeText(context, context.getString(com.yukuza.launcher.R.string.voice_assistant_not_available), Toast.LENGTH_SHORT).show()
 }

@@ -47,16 +47,17 @@ fun AppListScreen(
                 .fillMaxSize()
                 .padding(40.dp),
         ) {
+            val searchAppsContentDescription = androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.search_apps_content_description)
             OutlinedTextField(
                 value = query,
                 onValueChange = { q ->
                     query = q
                     viewModel.onSearch(q)
                 },
-                placeholder = { Text("Search apps…") },
+                placeholder = { Text(androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.search_apps_placeholder)) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .semantics { contentDescription = "Search apps" },
+                    .semantics { contentDescription = searchAppsContentDescription },
             )
             Spacer(Modifier.height(24.dp))
             TvLazyVerticalGrid(

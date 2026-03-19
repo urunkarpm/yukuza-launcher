@@ -10,7 +10,7 @@ interface GeocodingApi {
     suspend fun searchCity(
         @Query("name") name: String,
         @Query("count") count: Int = 5,
-        @Query("language") language: String = "en",
+        @Query("language") language: String = java.util.Locale.getDefault().language,
         @Query("format") format: String = "json",
     ): GeocodingResponse
 }

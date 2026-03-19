@@ -26,12 +26,12 @@ fun ScreenTimerWidget(modifier: Modifier = Modifier) {
     GlassCard(modifier = modifier.padding(8.dp)) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(
-                text = "%d:%02d".format(minutes, secs),
+                text = androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.screen_timer_format, minutes, secs),
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.White,
             )
             Text(
-                text = "Screen On",
+                text = androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.screen_on),
                 style = MaterialTheme.typography.labelSmall,
                 color = Color.White.copy(0.5f),
             )

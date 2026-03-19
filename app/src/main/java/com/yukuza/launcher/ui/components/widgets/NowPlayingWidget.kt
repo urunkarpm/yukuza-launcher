@@ -116,7 +116,7 @@ fun NowPlayingWidget(
                         // Spinning album art
                         AsyncImage(
                             model = data.albumArtUri,
-                            contentDescription = "Album art",
+                            contentDescription = androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.album_art_content_description),
                             error = painterResource(R.drawable.ic_music_note),
                             modifier = Modifier
                                 .size(64.dp)

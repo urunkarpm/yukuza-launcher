@@ -14,11 +14,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.yukuza.launcher.domain.model.AppInfo
+import com.yukuza.launcher.domain.model.AppInfo.Companion.PACKAGE_TV_SETTINGS
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -34,11 +38,22 @@ fun AppRow(
 ) {
     var editList by remember(apps) { mutableStateOf(apps.toMutableList()) }
 
+    val settingsIndex = apps.indexOfFirst { it.packageName == PACKAGE_TV_SETTINGS }
+    val settingsFocusRequester = remember { FocusRequester() }
+    var rowHasFocus by remember { mutableStateOf(false) }
+
     Column(
-        modifier = modifier.semantics { isTraversalGroup = true },
+        modifier = modifier
+            .semantics { isTraversalGroup = true }
+            .onFocusChanged { state ->
+                if (state.hasFocus && !rowHasFocus && settingsIndex >= 0) {
+                    settingsFocusRequester.requestFocus()
+                }
+                rowHasFocus = state.hasFocus
+            },
     ) {
         Text(
-            text = "APPS",
+            text = androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.apps_title),
             style = MaterialTheme.typography.labelSmall,
             color = Color.White.copy(alpha = 0.45f),
             modifier = Modifier.padding(bottom = 12.dp),
@@ -56,6 +71,7 @@ fun AppRow(
                     isFocused = focusedIndex == index,
                     onFocus = { onFocus(index) },
                     onLaunch = { onLaunch(app.packageName) },
+                    modifier = if (index == settingsIndex) Modifier.focusRequester(settingsFocusRequester) else Modifier,
                     onLongPress = {
                         if (isEditMode) {
                             // Move focused item one position right in edit mode

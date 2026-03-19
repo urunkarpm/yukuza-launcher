@@ -1,4 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Yukuza Launcher</string>
+
+    <!-- Weather Repository -->
+    <string name="weather_clear_sky">Clear Sky</string>
+    <string name="weather_mainly_clear">Mainly Clear</string>
+    <string name="weather_partly_cloudy">Partly Cloudy</string>
+    <string name="weather_overcast">Overcast</string>
+    <string name="weather_drizzle">Drizzle</string>
+    <string name="weather_rain">Rain</string>
+    <string name="weather_snow">Snow</string>
+    <string name="weather_thunderstorm">Thunderstorm</string>
+    <string name="weather_unknown">Unknown</string>
+
+    <!-- AQI -->
+    <string name="aqi_value">AQI %1$d</string>
+    <string name="aqi_good">GOOD</string>
+    <string name="aqi_fair">FAIR</string>
+    <string name="aqi_moderate">MODERATE</string>
+    <string name="aqi_poor">POOR</string>
+    <string name="aqi_very_poor">VERY POOR</string>
+
+    <!-- Network Widget -->
+    <string name="network_content_description">Network speed, tap for WiFi settings</string>
+    <string name="network_speed_format">%.0f Mb/s</string>
+    <string name="network_wifi">Wi-Fi</string>
+    <string name="network_offline">Offline</string>
+
+    <!-- Screen Timer Widget -->
+    <string name="screen_timer_format">%1$d:%2$02d</string>
+    <string name="screen_on">Screen On</string>
+
+    <!-- Now Playing Widget -->
+    <string name="album_art_content_description">Album art</string>
+
+    <!-- Overlays -->
+    <string name="night_mode">Night Mode</string>
+    <string name="volume">Volume</string>
+    <string name="brightness">Brightness</string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="game_mode">Game Mode</string>
+    <string name="hdmi_cec_required">HDMI-CEC required</string>
+    <string name="input_source_title">Select Input Source</string>
+    <string name="no_hdmi_sources">No HDMI-CEC sources available</string>
+    <string name="select_city">Select city…</string>
+    <string name="search_city_placeholder">Search city…</string>
+    <string name="city_selected_format">City: %1$s</string>
+
+    <!-- App System -->
+    <string name="apps_title">APPS</string>
+    <string name="google_assistant_content_description">Google Assistant</string>
+    <string name="voice_assistant_not_available">Voice assistant not available</string>
+    <string name="app_icon_content_description">%1$s, app icon</string>
+    <string name="search_apps_placeholder">Search apps…</string>
+    <string name="search_apps_content_description">Search apps</string>
+    <string name="app_list_coming_soon">App List — Coming Soon</string>
 </resources>

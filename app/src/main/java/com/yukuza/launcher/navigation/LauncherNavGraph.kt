@@ -35,8 +35,7 @@ fun LauncherNavGraph() {
         }
         composable("apps") {
             // AppListScreen added in Task 17
-            // Placeholder back navigation
-            androidx.compose.material3.Text("App List — Coming Soon")
+            androidx.compose.material3.Text(androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.app_list_coming_soon))
         }
     }
 }
