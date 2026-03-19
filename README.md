@@ -68,6 +68,8 @@ Tap the temperature widget → type a city name → results appear instantly fro
 
 ---
 
+![Yukuza Launcher](YUKUZA.jpeg)
+
 ## ✦ How to Install
 
 Most Android TV devices don't offer a built-in launcher picker. Follow these steps:
