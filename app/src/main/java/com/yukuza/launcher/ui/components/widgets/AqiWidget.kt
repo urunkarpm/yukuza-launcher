@@ -20,8 +20,8 @@ fun AqiWidget(data: AqiData, modifier: Modifier = Modifier) {
         AqiData.AqiCategory.POOR      -> Color(0xFFF44336)
         AqiData.AqiCategory.VERY_POOR -> Color(0xFF9C27B0)
     }
-    GlassCard(modifier = modifier.padding(8.dp)) {
-        Column(modifier = Modifier.padding(12.dp)) {
+    GlassCard(modifier = modifier) {
+        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp)) {
             val categoryNameRes = when (data.category) {
                 AqiData.AqiCategory.GOOD -> com.yukuza.launcher.R.string.aqi_good
                 AqiData.AqiCategory.FAIR -> com.yukuza.launcher.R.string.aqi_fair

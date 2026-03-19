@@ -94,7 +94,7 @@ fun NowPlayingWidget(
                             )
                         )
                 )
-                Column(Modifier.padding(18.dp)) {
+                Column(Modifier.padding(horizontal = 22.dp, vertical = 20.dp)) {
                     // Source badge with pulsing dot
                     val pulse = pulseAlpha()
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -111,7 +111,7 @@ fun NowPlayingWidget(
                             color = Color.White.copy(alpha = 0.4f),
                         )
                     }
-                    Spacer(Modifier.height(12.dp))
+                    Spacer(Modifier.height(14.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         // Spinning album art
                         AsyncImage(

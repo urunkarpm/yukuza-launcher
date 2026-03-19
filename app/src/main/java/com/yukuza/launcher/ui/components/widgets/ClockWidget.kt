@@ -35,23 +35,23 @@ fun ClockWidget(modifier: Modifier = Modifier) {
     val ampm = time.format(ampmFormatter)
     val today = remember { LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE · d MMMM yyyy", java.util.Locale.getDefault())) }
 
-    GlassCard(modifier = modifier.padding(horizontal = 16.dp, vertical = 10.dp)) {
-        Column(modifier = Modifier.padding(12.dp)) {
+    GlassCard(modifier = modifier) {
+        Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp)) {
             Row(verticalAlignment = Alignment.Bottom) {
                 Text(
                     text = time.format(timeFormatter),
                     style = MaterialTheme.typography.displayLarge,
                     color = Color.White,
                 )
-                Spacer(Modifier.width(6.dp))
+                Spacer(Modifier.width(8.dp))
                 Text(
                     text = ampm,
                     style = MaterialTheme.typography.labelSmall,
                     color = Color.White.copy(alpha = 0.45f),
-                    modifier = Modifier.padding(bottom = 4.dp),
+                    modifier = Modifier.padding(bottom = 6.dp),
                 )
             }
-            Spacer(Modifier.height(4.dp))
+            Spacer(Modifier.height(6.dp))
             Text(
                 text = today,
                 style = MaterialTheme.typography.labelSmall,

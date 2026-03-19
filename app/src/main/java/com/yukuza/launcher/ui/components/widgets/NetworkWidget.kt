@@ -22,13 +22,12 @@ fun NetworkWidget(data: NetworkData, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     GlassCard(
         modifier = modifier
-            .padding(8.dp)
             .clickable {
                 context.startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
             }
             .semantics { contentDescription = context.getString(com.yukuza.launcher.R.string.network_content_description) },
     ) {
-        Column(modifier = Modifier.padding(12.dp)) {
+        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp)) {
             Text(
                 text = androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.network_speed_format, data.speedMbps),
                 style = MaterialTheme.typography.bodyMedium,
