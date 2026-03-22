@@ -43,6 +43,10 @@ fun HomeScreen(
     onCityQueryChange: (String) -> Unit = {},
     onCitySelected: (com.yukuza.launcher.data.remote.GeocodingResult) -> Unit = {},
     onWeatherClick: () -> Unit = {},
+    onNightModeToggle: () -> Unit = {},
+    onCheckForUpdate: () -> Unit = {},
+    onDismissUpdate: () -> Unit = {},
+    onClearUpToDateFlag: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val density = LocalDensity.current.density
@@ -120,6 +124,33 @@ fun HomeScreen(
                 onCityQueryChange = onCityQueryChange,
                 onCitySelected = onCitySelected,
                 onDismiss = onWeatherClick,
+            )
+        }
+
+        // Quick settings overlay
+        if (uiState.showSettings) {
+            com.yukuza.launcher.ui.overlay.QuickSettingsOverlay(
+                onDismiss = onSettingsToggle,
+                isNightMode = uiState.isNightMode,
+                onNightModeToggle = onNightModeToggle,
+                cityQuery = uiState.cityQuery,
+                citySuggestions = uiState.citySuggestions,
+                cityName = uiState.cityName,
+                onCityQueryChange = onCityQueryChange,
+                onCitySelected = onCitySelected,
+                isCheckingUpdate = uiState.isCheckingUpdate,
+                updateInfo = uiState.updateInfo,
+                lastCheckWasUpToDate = uiState.lastCheckWasUpToDate,
+                onCheckForUpdate = onCheckForUpdate,
+                onClearUpToDateFlag = onClearUpToDateFlag,
+            )
+        }
+
+        // Update dialog
+        if (uiState.updateInfo != null) {
+            com.yukuza.launcher.ui.overlay.UpdateDialog(
+                updateInfo = uiState.updateInfo,
+                onDismiss = onDismissUpdate,
             )
         }
     }

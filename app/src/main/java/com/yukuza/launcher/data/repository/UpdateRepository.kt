@@ -10,8 +10,8 @@ import javax.inject.Singleton
 @Singleton
 class UpdateRepository @Inject constructor(
     private val api: GithubReleasesApi,
-    private val currentVersion: String = BuildConfig.VERSION_NAME,
 ) {
+    private val currentVersion: String get() = BuildConfig.VERSION_NAME
     suspend fun checkForUpdate(): UpdateInfo? = try {
         withTimeout(10_000) {
             val release = api.getLatestRelease()
