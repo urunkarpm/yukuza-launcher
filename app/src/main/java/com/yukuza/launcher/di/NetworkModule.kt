@@ -4,6 +4,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.yukuza.launcher.data.remote.AirQualityApi
 import com.yukuza.launcher.data.remote.GeocodingApi
+import com.yukuza.launcher.data.remote.GithubReleasesApi
 import com.yukuza.launcher.data.remote.OpenMeteoApi
 import dagger.Module
 import dagger.Provides
@@ -46,4 +47,13 @@ object NetworkModule {
             .addConverterFactory(converterFactory())
             .build()
             .create(GeocodingApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideGithubReleasesApi(): GithubReleasesApi =
+        Retrofit.Builder()
+            .baseUrl("https://api.github.com/")
+            .addConverterFactory(converterFactory())
+            .build()
+            .create(GithubReleasesApi::class.java)
 }
