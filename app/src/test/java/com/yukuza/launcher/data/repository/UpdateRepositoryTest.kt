@@ -95,7 +95,7 @@ class UpdateRepositoryTest {
     }
 
     @Test
-    fun `handles null body gracefully`() = runTest {
+    fun `handles empty release notes`() = runTest {
         coEvery { api.getLatestRelease() } returns release("v1.3", body = "")
         val result = repo.checkForUpdate()
         assertEquals("", result?.releaseNotes)
