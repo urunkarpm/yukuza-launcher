@@ -6,12 +6,14 @@ import com.yukuza.launcher.data.remote.AirQualityApi
 import com.yukuza.launcher.data.remote.GeocodingApi
 import com.yukuza.launcher.data.remote.GithubReleasesApi
 import com.yukuza.launcher.data.remote.OpenMeteoApi
+import com.yukuza.launcher.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -47,6 +49,10 @@ object NetworkModule {
             .addConverterFactory(converterFactory())
             .build()
             .create(GeocodingApi::class.java)
+
+    @Provides
+    @Named("appVersion")
+    fun provideAppVersion(): String = BuildConfig.VERSION_NAME
 
     @Provides
     @Singleton

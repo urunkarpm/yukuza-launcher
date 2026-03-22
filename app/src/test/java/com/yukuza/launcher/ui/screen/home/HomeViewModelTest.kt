@@ -12,6 +12,7 @@ import com.yukuza.launcher.domain.usecase.GetAppsUseCase
 import com.yukuza.launcher.domain.usecase.GetMediaSessionUseCase
 import com.yukuza.launcher.domain.usecase.GetNetworkSpeedUseCase
 import com.yukuza.launcher.domain.usecase.GetWeatherUseCase
+import com.yukuza.launcher.domain.usecase.CheckUpdateUseCase
 import com.yukuza.launcher.domain.usecase.IncrementLaunchCountUseCase
 import com.yukuza.launcher.domain.usecase.ReorderAppsUseCase
 import com.yukuza.launcher.util.MainDispatcherRule
@@ -41,6 +42,7 @@ class HomeViewModelTest {
     private val getMedia = mockk<GetMediaSessionUseCase>()
     private val dataStore = mockk<DataStore<Preferences>>(relaxed = true)
     private val geocodingApi = mockk<GeocodingApi>(relaxed = true)
+    private val checkUpdate = mockk<CheckUpdateUseCase>(relaxed = true)
 
     private lateinit var vm: HomeViewModel
 
@@ -66,6 +68,7 @@ class HomeViewModelTest {
             getMedia,
             dataStore,
             geocodingApi,
+            checkUpdate,
         )
     }
 

@@ -1,17 +1,17 @@
 package com.yukuza.launcher.data.repository
 
-import com.yukuza.launcher.BuildConfig
 import com.yukuza.launcher.data.remote.GithubReleasesApi
 import com.yukuza.launcher.domain.model.UpdateInfo
 import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Singleton
 class UpdateRepository @Inject constructor(
     private val api: GithubReleasesApi,
+    @Named("appVersion") private val currentVersion: String,
 ) {
-    private val currentVersion: String get() = BuildConfig.VERSION_NAME
     suspend fun checkForUpdate(): UpdateInfo? = try {
         withTimeout(10_000) {
             val release = api.getLatestRelease()
