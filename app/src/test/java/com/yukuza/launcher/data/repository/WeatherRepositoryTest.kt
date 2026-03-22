@@ -1,10 +1,10 @@
 package com.yukuza.launcher.data.repository
 
+import com.yukuza.launcher.R
 import com.yukuza.launcher.data.db.WeatherCacheDao
 import com.yukuza.launcher.data.entity.WeatherCacheEntity
+import com.yukuza.launcher.data.remote.AirQualityApi
 import com.yukuza.launcher.data.remote.OpenMeteoApi
-import com.yukuza.launcher.data.remote.dto.AqiResponse
-import com.yukuza.launcher.data.remote.dto.WeatherResponse
 import com.yukuza.launcher.domain.model.AqiData.AqiCategory
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -15,9 +15,10 @@ import org.junit.Test
 import java.io.IOException
 
 class WeatherRepositoryTest {
-    private val api = mockk<OpenMeteoApi>()
+    private val weatherApi = mockk<OpenMeteoApi>()
+    private val aqiApi = mockk<AirQualityApi>()
     private val dao = mockk<WeatherCacheDao>(relaxed = true)
-    private val repo = WeatherRepository(api, dao)
+    private val repo = WeatherRepository(weatherApi, aqiApi, dao)
 
     @Test
     fun `returns cached data with stale flag when network fails`() = runTest {
@@ -29,8 +30,8 @@ class WeatherRepositoryTest {
             fetchedAt = 0L
         )
         coEvery { dao.get() } returns cached
-        coEvery { api.getForecast(any(), any()) } throws IOException()
-        coEvery { api.getAirQuality(any(), any()) } throws IOException()
+        coEvery { weatherApi.getForecast(any(), any()) } throws IOException()
+        coEvery { aqiApi.getAirQuality(any(), any()) } throws IOException()
 
         val result = repo.getWeather(19.07, 72.87)
 
@@ -39,13 +40,13 @@ class WeatherRepositoryTest {
     }
 
     @Test
-    fun `maps WMO code 1 to Mainly Clear`() {
-        assertEquals("Mainly Clear", WeatherRepository.wmoCodeToDescription(1))
+    fun `maps WMO code 1 to Mainly Clear string resource`() {
+        assertEquals(R.string.weather_mainly_clear, WeatherRepository.wmoCodeToDescription(1))
     }
 
     @Test
-    fun `maps WMO code 0 to Clear Sky`() {
-        assertEquals("Clear Sky", WeatherRepository.wmoCodeToDescription(0))
+    fun `maps WMO code 0 to Clear Sky string resource`() {
+        assertEquals(R.string.weather_clear_sky, WeatherRepository.wmoCodeToDescription(0))
     }
 
     @Test

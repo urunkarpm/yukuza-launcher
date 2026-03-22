@@ -31,6 +31,10 @@ fun LauncherNavGraph() {
                 onCityQueryChange = vm::onCityQueryChange,
                 onCitySelected = vm::onCitySelected,
                 onWeatherClick = vm::toggleCityPicker,
+                onNightModeToggle = { vm.setNightMode(!state.isNightMode) },
+                onCheckForUpdate = vm::checkForUpdate,
+                onDismissUpdate = vm::dismissUpdate,
+                onClearUpToDateFlag = vm::clearUpToDateFlag,
             )
         }
         composable("apps") {

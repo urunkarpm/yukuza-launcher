@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -61,6 +62,11 @@ fun QuickSettingsOverlay(
     cityName: String,
     onCityQueryChange: (String) -> Unit,
     onCitySelected: (GeocodingResult) -> Unit,
+    isCheckingUpdate: Boolean,
+    updateInfo: com.yukuza.launcher.domain.model.UpdateInfo?,
+    lastCheckWasUpToDate: Boolean,
+    onCheckForUpdate: () -> Unit,
+    onClearUpToDateFlag: () -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -126,6 +132,13 @@ fun QuickSettingsOverlay(
                         onCitySelected(result)
                         onDismiss()
                     },
+                )
+                UpdateCheckerRow(
+                    isCheckingUpdate = isCheckingUpdate,
+                    updateInfo = updateInfo,
+                    lastCheckWasUpToDate = lastCheckWasUpToDate,
+                    onCheckForUpdate = onCheckForUpdate,
+                    onClearUpToDateFlag = onClearUpToDateFlag,
                 )
             }
         }
@@ -374,4 +387,63 @@ private fun CityResultRow(result: GeocodingResult, onClick: () -> Unit) {
         modifier = Modifier.padding(horizontal = 4.dp),
         color = Color.White.copy(alpha = 0.06f),
     )
+}
+
+@Composable
+private fun UpdateCheckerRow(
+    isCheckingUpdate: Boolean,
+    updateInfo: com.yukuza.launcher.domain.model.UpdateInfo?,
+    lastCheckWasUpToDate: Boolean,
+    onCheckForUpdate: () -> Unit,
+    onClearUpToDateFlag: () -> Unit,
+) {
+    if (lastCheckWasUpToDate) {
+        androidx.compose.runtime.LaunchedEffect(lastCheckWasUpToDate) {
+            kotlinx.coroutines.delay(2_000)
+            onClearUpToDateFlag()
+        }
+    }
+
+    Row(
+        Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        when {
+            isCheckingUpdate -> {
+                Text(
+                    androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.update_checking),
+                    color = Color.White,
+                    modifier = Modifier.weight(1f),
+                )
+                androidx.compose.material3.CircularProgressIndicator(
+                    modifier = Modifier.size(20.dp),
+                    strokeWidth = 2.dp,
+                    color = Color.White,
+                )
+            }
+            updateInfo != null -> {
+                Text(
+                    androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.update_available),
+                    color = Color(0xFFB39DFF),
+                    modifier = Modifier.weight(1f),
+                )
+            }
+            lastCheckWasUpToDate -> {
+                Text(
+                    androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.update_up_to_date),
+                    color = Color.White.copy(alpha = 0.6f),
+                    modifier = Modifier.weight(1f),
+                )
+            }
+            else -> {
+                Spacer(Modifier.weight(1f))
+                androidx.compose.material3.TextButton(onClick = onCheckForUpdate) {
+                    Text(
+                        androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.update_check_for_update),
+                        color = Color(0xFFB39DFF),
+                    )
+                }
+            }
+        }
+    }
 }

@@ -15,6 +15,8 @@ import com.yukuza.launcher.domain.model.AppInfo
 import com.yukuza.launcher.domain.model.MediaData
 import com.yukuza.launcher.domain.model.NetworkData
 import com.yukuza.launcher.domain.model.WeatherData
+import com.yukuza.launcher.domain.model.UpdateInfo
+import com.yukuza.launcher.domain.usecase.CheckUpdateUseCase
 import com.yukuza.launcher.domain.usecase.GetAqiUseCase
 import com.yukuza.launcher.domain.usecase.GetAppsUseCase
 import com.yukuza.launcher.domain.usecase.GetMediaSessionUseCase
@@ -49,6 +51,9 @@ data class HomeUiState(
     val cityQuery: String = "",
     val citySuggestions: List<GeocodingResult> = emptyList(),
     val cityName: String = "",
+    val updateInfo: UpdateInfo? = null,
+    val isCheckingUpdate: Boolean = false,
+    val lastCheckWasUpToDate: Boolean = false,
 )
 
 @HiltViewModel
@@ -62,6 +67,7 @@ class HomeViewModel @Inject constructor(
     private val getMedia: GetMediaSessionUseCase,
     private val dataStore: DataStore<Preferences>,
     private val geocodingApi: GeocodingApi,
+    private val checkUpdate: CheckUpdateUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
@@ -99,6 +105,7 @@ class HomeViewModel @Inject constructor(
                 _uiState.update { it.copy(nowPlaying = media) }
             }
         }
+        checkForUpdate()
     }
 
     private fun fetchWeatherForLocation(lat: Double, lon: Double) {
@@ -150,4 +157,22 @@ class HomeViewModel @Inject constructor(
     fun setAmbient(enabled: Boolean) = _uiState.update { it.copy(isAmbient = enabled) }
     fun toggleSettings() = _uiState.update { it.copy(showSettings = !it.showSettings) }
     fun toggleCityPicker() = _uiState.update { it.copy(showCityPicker = !it.showCityPicker, cityQuery = "", citySuggestions = emptyList()) }
+
+    fun checkForUpdate() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isCheckingUpdate = true) }
+            val info = checkUpdate()
+            _uiState.update {
+                it.copy(
+                    isCheckingUpdate = false,
+                    updateInfo = info,
+                    lastCheckWasUpToDate = info == null,
+                )
+            }
+        }
+    }
+
+    fun dismissUpdate() = _uiState.update { it.copy(updateInfo = null) }
+
+    fun clearUpToDateFlag() = _uiState.update { it.copy(lastCheckWasUpToDate = false) }
 }
