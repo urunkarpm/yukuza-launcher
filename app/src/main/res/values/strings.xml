@@ -55,4 +55,18 @@
     <string name="search_apps_placeholder">Search apps…</string>
     <string name="search_apps_content_description">Search apps</string>
     <string name="app_list_coming_soon">App List — Coming Soon</string>
+
+    <!-- Update Checker -->
+    <string name="update_check_for_update">Check for Update</string>
+    <string name="update_checking">Checking…</string>
+    <string name="update_available">Update available — tap to install</string>
+    <string name="update_up_to_date">You\'re up to date</string>
+    <string name="update_dialog_title">Update Available</string>
+    <string name="update_dialog_version">Version %1$s is available</string>
+    <string name="update_dialog_install">Download &amp; Install</string>
+    <string name="update_dialog_dismiss">Dismiss</string>
+    <string name="update_toast_unavailable">Downloader unavailable on this device</string>
+    <string name="update_toast_no_permission">Enable \'Install unknown apps\' for Yukuza Launcher in Settings</string>
+    <string name="update_toast_failed">Download failed</string>
+    <string name="update_toast_no_update">Could not check for updates</string>
 </resources>
