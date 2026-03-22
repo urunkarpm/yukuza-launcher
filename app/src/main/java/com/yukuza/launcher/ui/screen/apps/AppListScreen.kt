@@ -17,6 +17,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
@@ -64,7 +66,9 @@ fun AppListScreen(
                 columns = TvGridCells.Fixed(columns),
                 horizontalArrangement = Arrangement.spacedBy(24.dp),
                 verticalArrangement = Arrangement.spacedBy(24.dp),
-                modifier = Modifier.semantics { isTraversalGroup = true },
+                modifier = Modifier
+                    .semantics { isTraversalGroup = true }
+                    .focusProperties { exit = { FocusRequester.Cancel } },
             ) {
                 items(apps, key = { it.packageName }) { app ->
                     AppIcon(
