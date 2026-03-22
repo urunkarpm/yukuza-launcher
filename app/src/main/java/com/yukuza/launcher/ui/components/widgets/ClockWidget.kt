@@ -14,9 +14,10 @@ import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.yukuza.launcher.ui.components.glass.GlassCard
+import com.yukuza.launcher.ui.theme.YukuzaColors
+import com.yukuza.launcher.ui.theme.YukuzaSpacing
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.LocalTime
@@ -36,26 +37,26 @@ fun ClockWidget(modifier: Modifier = Modifier) {
     val today = remember { LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE · d MMMM yyyy", java.util.Locale.getDefault())) }
 
     GlassCard(modifier = modifier) {
-        Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp)) {
+        Column(modifier = Modifier.padding(horizontal = YukuzaSpacing.clockHorizontal, vertical = YukuzaSpacing.clockVertical)) {
             Row(verticalAlignment = Alignment.Bottom) {
                 Text(
                     text = time.format(timeFormatter),
                     style = MaterialTheme.typography.displayLarge,
-                    color = Color.White,
+                    color = YukuzaColors.ContentPrimary,
                 )
-                Spacer(Modifier.width(8.dp))
+                Spacer(Modifier.width(YukuzaSpacing.md))
                 Text(
                     text = ampm,
                     style = MaterialTheme.typography.labelSmall,
-                    color = Color.White.copy(alpha = 0.45f),
+                    color = YukuzaColors.ContentTertiary,
                     modifier = Modifier.padding(bottom = 6.dp),
                 )
             }
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(YukuzaSpacing.sm))
             Text(
                 text = today,
                 style = MaterialTheme.typography.labelSmall,
-                color = Color.White.copy(alpha = 0.6f),
+                color = YukuzaColors.ContentSecondary,
             )
         }
     }

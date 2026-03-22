@@ -4,7 +4,6 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.provider.Settings
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
@@ -20,7 +19,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.graphicsLayer
@@ -43,9 +40,13 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.yukuza.launcher.domain.model.AppInfo
 import com.yukuza.launcher.domain.model.AppInfo.Companion.PACKAGE_TV_SETTINGS
+import com.yukuza.launcher.ui.theme.YukuzaColors
+import com.yukuza.launcher.ui.theme.YukuzaMotion
+import com.yukuza.launcher.ui.theme.YukuzaShapes
+import com.yukuza.launcher.ui.theme.YukuzaSpacing
 
-private val ScaleEasing = FastOutSlowInEasing
-private const val SCALE_DURATION = 100
+private val ScaleEasing = YukuzaMotion.focusEasing
+private const val SCALE_DURATION = YukuzaMotion.FOCUS_SCALE_MS
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -83,7 +84,7 @@ fun AppIcon(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .width(88.dp)
+            .width(YukuzaSpacing.appIconWidth)
             .onFocusChanged { if (it.isFocused) onFocus() }
             .focusable()
             .combinedClickable(
@@ -95,22 +96,22 @@ fun AppIcon(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .size(80.dp)
+                .size(YukuzaSpacing.appIconSize)
                 .graphicsLayer {
                     scaleX = scale
                     scaleY = scale
                 }
-                .clip(RoundedCornerShape(20.dp))
+                .clip(YukuzaShapes.appIcon)
                 .border(
                     width = 2.dp,
-                    color = Color.White.copy(alpha = ringAlpha),
-                    shape = RoundedCornerShape(20.dp),
+                    color = YukuzaColors.ContentPrimary.copy(alpha = ringAlpha),
+                    shape = YukuzaShapes.appIcon,
                 )
                 .background(
-                    color = Color.White.copy(alpha = ringAlpha * 0.15f),
-                    shape = RoundedCornerShape(20.dp),
+                    color = YukuzaColors.ContentPrimary.copy(alpha = ringAlpha * 0.15f),
+                    shape = YukuzaShapes.appIcon,
                 )
-                .padding(4.dp),
+                .padding(YukuzaSpacing.xs),
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(context)
@@ -121,15 +122,15 @@ fun AppIcon(
                     ColorMatrix().apply { setToSaturation(saturation) }
                 ),
                 modifier = Modifier
-                    .size(64.dp)
-                    .clip(RoundedCornerShape(14.dp)),
+                    .size(YukuzaSpacing.appIconDrawable)
+                    .clip(YukuzaShapes.appIconInner),
             )
         }
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(YukuzaSpacing.md))
         Text(
             text = app.label,
             style = MaterialTheme.typography.labelSmall,
-            color = Color.White.copy(alpha = labelAlpha),
+            color = YukuzaColors.ContentPrimary.copy(alpha = labelAlpha),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )

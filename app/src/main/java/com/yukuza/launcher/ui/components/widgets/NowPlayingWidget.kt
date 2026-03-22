@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -43,6 +42,10 @@ import coil.compose.AsyncImage
 import com.yukuza.launcher.R
 import com.yukuza.launcher.domain.model.MediaData
 import com.yukuza.launcher.ui.components.glass.GlassCard
+import com.yukuza.launcher.ui.theme.YukuzaColors
+import com.yukuza.launcher.ui.theme.YukuzaMotion
+import com.yukuza.launcher.ui.theme.YukuzaShapes
+import com.yukuza.launcher.ui.theme.YukuzaSpacing
 
 @Composable
 fun pulseAlpha(): Float {
@@ -51,7 +54,7 @@ fun pulseAlpha(): Float {
         initialValue = 0.4f,
         targetValue = 1f,
         animationSpec = infiniteRepeatable(
-            animation = tween(800, easing = FastOutSlowInEasing),
+            animation = tween(YukuzaMotion.PULSE_MS, easing = FastOutSlowInEasing),
             repeatMode = RepeatMode.Reverse,
         ),
         label = "pulseAlpha",
@@ -77,12 +80,12 @@ fun NowPlayingWidget(
             initialValue = 0f,
             targetValue = 360f,
             animationSpec = infiniteRepeatable(
-                animation = tween(8000, easing = LinearEasing),
+                animation = tween(YukuzaMotion.ALBUM_SPIN_MS, easing = LinearEasing),
             ),
             label = "albumRotation",
         )
 
-        GlassCard(modifier = Modifier.width(460.dp)) {
+        GlassCard(modifier = Modifier.width(YukuzaSpacing.nowPlayingWidth)) {
             Box {
                 // Dominant color bleed background
                 Box(
@@ -94,21 +97,21 @@ fun NowPlayingWidget(
                             )
                         )
                 )
-                Column(Modifier.padding(horizontal = 22.dp, vertical = 20.dp)) {
+                Column(Modifier.padding(horizontal = YukuzaSpacing.nowPlayingHorizontal, vertical = YukuzaSpacing.nowPlayingVertical)) {
                     // Source badge with pulsing dot
                     val pulse = pulseAlpha()
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Box(
                             Modifier
-                                .size(6.dp)
-                                .background(Color(0xFF1DB954), CircleShape)
+                                .size(YukuzaSpacing.pulseDotSize)
+                                .background(YukuzaColors.NowPlayingGreen, CircleShape)
                                 .graphicsLayer { alpha = pulse }
                         )
-                        Spacer(Modifier.width(6.dp))
+                        Spacer(Modifier.width(YukuzaSpacing.sm))
                         Text(
                             text = data.sourceAppLabel,
                             style = MaterialTheme.typography.labelSmall,
-                            color = Color.White.copy(alpha = 0.4f),
+                            color = YukuzaColors.ContentQuaternary,
                         )
                     }
                     Spacer(Modifier.height(14.dp))
@@ -119,29 +122,29 @@ fun NowPlayingWidget(
                             contentDescription = androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.album_art_content_description),
                             error = painterResource(R.drawable.ic_music_note),
                             modifier = Modifier
-                                .size(64.dp)
-                                .clip(RoundedCornerShape(10.dp))
+                                .size(YukuzaSpacing.albumArtSize)
+                                .clip(YukuzaShapes.albumArt)
                                 .graphicsLayer {
                                     if (data.isPlaying) rotationZ = rotation
                                 },
                         )
-                        Spacer(Modifier.width(16.dp))
+                        Spacer(Modifier.width(YukuzaSpacing.xl))
                         Column(Modifier.weight(1f)) {
                             Text(
                                 text = data.trackTitle,
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = Color.White,
+                                color = YukuzaColors.ContentPrimary,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
                             )
                             Text(
                                 text = data.artist,
                                 style = MaterialTheme.typography.labelSmall,
-                                color = Color.White.copy(alpha = 0.5f),
+                                color = YukuzaColors.ContentDimmed,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
                             )
-                            Spacer(Modifier.height(8.dp))
+                            Spacer(Modifier.height(YukuzaSpacing.md))
                             // Progress bar
                             val progress = if (data.durationMs > 0) {
                                 (data.elapsedMs.toFloat() / data.durationMs.toFloat()).coerceIn(0f, 1f)
@@ -149,10 +152,10 @@ fun NowPlayingWidget(
                             LinearProgressIndicator(
                                 progress = { progress },
                                 color = data.dominantColor,
-                                trackColor = Color.White.copy(alpha = 0.12f),
+                                trackColor = YukuzaColors.ContentGhost,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(2.dp),
+                                    .height(YukuzaSpacing.progressBarHeight),
                             )
                         }
                     }

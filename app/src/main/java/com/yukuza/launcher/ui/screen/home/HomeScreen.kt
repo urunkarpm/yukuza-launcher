@@ -10,16 +10,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.yukuza.launcher.domain.model.AppInfo
 import com.yukuza.launcher.ui.components.AppRow
+import com.yukuza.launcher.ui.theme.YukuzaColors
+import com.yukuza.launcher.ui.theme.YukuzaSpacing
 import com.yukuza.launcher.ui.components.aurora.AuroraBackground
 import com.yukuza.launcher.ui.components.widgets.AqiWidget
 import com.yukuza.launcher.ui.components.widgets.ClockWidget
@@ -59,20 +59,20 @@ fun HomeScreen(
         Box(
             Modifier
                 .fillMaxSize()
-                .padding(horizontal = 40.dp),
+                .padding(horizontal = YukuzaSpacing.screenHorizontal),
         ) {
             // Top bar — clock left, widgets right
             Row(
                 Modifier
                     .align(Alignment.TopStart)
                     .fillMaxWidth()
-                    .padding(top = 36.dp),
+                    .padding(top = YukuzaSpacing.topBarTop),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 ClockWidget()
                 Spacer(Modifier.weight(1f))
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(YukuzaSpacing.widgetSpacing),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     uiState.weather?.let { WeatherWidget(it, onClick = onWeatherClick) }
@@ -93,15 +93,15 @@ fun HomeScreen(
                 Modifier
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth()
-                    .background(Color(0xD004020C))
+                    .background(YukuzaColors.AppStripSurface)
                     .border(
                         BorderStroke(
                             width = if (density >= 2f) 0.5.dp else 1.dp,
-                            color = Color(0x038632FA).copy(alpha = 0.22f),
+                            color = YukuzaColors.AppStripBorder,
                         ),
                         RectangleShape,
                     )
-                    .padding(horizontal = 40.dp, vertical = 20.dp),
+                    .padding(horizontal = YukuzaSpacing.screenHorizontal, vertical = YukuzaSpacing.appStripVertical),
             ) {
                 AppRow(
                     apps = uiState.apps,

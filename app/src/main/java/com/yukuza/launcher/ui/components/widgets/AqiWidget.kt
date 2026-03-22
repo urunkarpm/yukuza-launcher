@@ -6,22 +6,23 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.yukuza.launcher.domain.model.AqiData
 import com.yukuza.launcher.ui.components.glass.GlassCard
+import com.yukuza.launcher.ui.theme.YukuzaColors
+import com.yukuza.launcher.ui.theme.YukuzaSpacing
 
 @Composable
 fun AqiWidget(data: AqiData, modifier: Modifier = Modifier) {
     val categoryColor = when (data.category) {
-        AqiData.AqiCategory.GOOD      -> Color(0xFF4CAF50)
-        AqiData.AqiCategory.FAIR      -> Color(0xFFCDDC39)
-        AqiData.AqiCategory.MODERATE  -> Color(0xFFFF9800)
-        AqiData.AqiCategory.POOR      -> Color(0xFFF44336)
-        AqiData.AqiCategory.VERY_POOR -> Color(0xFF9C27B0)
+        AqiData.AqiCategory.GOOD      -> YukuzaColors.AqiGood
+        AqiData.AqiCategory.FAIR      -> YukuzaColors.AqiFair
+        AqiData.AqiCategory.MODERATE  -> YukuzaColors.AqiModerate
+        AqiData.AqiCategory.POOR      -> YukuzaColors.AqiPoor
+        AqiData.AqiCategory.VERY_POOR -> YukuzaColors.AqiVeryPoor
     }
     GlassCard(modifier = modifier) {
-        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp)) {
+        Column(modifier = Modifier.padding(horizontal = YukuzaSpacing.cardHorizontal, vertical = YukuzaSpacing.cardVertical)) {
             val categoryNameRes = when (data.category) {
                 AqiData.AqiCategory.GOOD -> com.yukuza.launcher.R.string.aqi_good
                 AqiData.AqiCategory.FAIR -> com.yukuza.launcher.R.string.aqi_fair

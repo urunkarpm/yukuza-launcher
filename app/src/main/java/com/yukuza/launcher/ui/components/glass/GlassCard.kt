@@ -7,7 +7,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asComposeRenderEffect
@@ -15,6 +14,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.yukuza.launcher.ui.theme.YukuzaColors
+import com.yukuza.launcher.ui.theme.YukuzaShapes
 
 @Composable
 fun GlassCard(
@@ -22,7 +22,7 @@ fun GlassCard(
     content: @Composable BoxScope.() -> Unit,
 ) {
     val density = LocalDensity.current.density
-    val shape = RoundedCornerShape(12.dp)
+    val shape = YukuzaShapes.card
     Box(
         modifier = modifier
             .border(
