@@ -187,6 +187,7 @@ private fun startDownload(
         return
     }
     val apkFile = File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "yukuza-update.apk")
+    apkFile.delete()
     val request = DownloadManager.Request(Uri.parse(url))
         .setTitle("Yukuza Launcher update")
         .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
