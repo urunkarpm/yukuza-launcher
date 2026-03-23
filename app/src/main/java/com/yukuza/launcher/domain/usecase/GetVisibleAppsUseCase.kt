@@ -6,6 +6,6 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetAppsUseCase @Inject constructor(private val repo: AppRepository) {
-    operator fun invoke(): Flow<ImmutableList<AppInfo>> = repo.getAllApps()
+class GetVisibleAppsUseCase @Inject constructor(private val repo: AppRepository) {
+    operator fun invoke(): Flow<ImmutableList<AppInfo>> = repo.getVisibleApps()
 }

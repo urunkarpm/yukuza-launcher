@@ -21,9 +21,7 @@ class PackageChangeSyncWorker @AssistedInject constructor(
 ) : CoroutineWorker(ctx, params) {
 
     override suspend fun doWork(): Result {
-        // AppRepository.getApps() already re-queries PackageManager on each collection,
-        // so triggering a re-query via an empty state update is sufficient.
-        // The Room table update will propagate to all collectors automatically.
+        appRepository.syncWithPackageManager()
         return Result.success()
     }
 }
