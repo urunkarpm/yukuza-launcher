@@ -25,10 +25,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Delete
-import androidx.compose.material.icons.rounded.Edit
-import androidx.compose.material.icons.rounded.Visibility
-import androidx.compose.material.icons.rounded.VisibilityOff
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -143,7 +143,7 @@ fun AppContextMenuOverlay(
 
                 // Hide / Unhide
                 ContextMenuButton(
-                    icon = if (app.isHidden) Icons.Rounded.Visibility else Icons.Rounded.VisibilityOff,
+                    icon = if (app.isHidden) Icons.Default.Visibility else Icons.Default.VisibilityOff,
                     label = if (app.isHidden) "Unhide" else "Hide",
                     focusRequester = firstButtonFocusRequester,
                     onClick = {
@@ -154,7 +154,7 @@ fun AppContextMenuOverlay(
 
                 // Uninstall or Disable
                 ContextMenuButton(
-                    icon = Icons.Rounded.Delete,
+                    icon = Icons.Default.Delete,
                     label = if (isSystemApp) "Disable" else "Uninstall",
                     tint = Color(0xFFFF6B6B),
                     onClick = {
@@ -180,7 +180,7 @@ fun AppContextMenuOverlay(
                 // Edit Order — only on home row
                 if (onEnterEditMode != null) {
                     ContextMenuButton(
-                        icon = Icons.Rounded.Edit,
+                        icon = Icons.Default.Edit,
                         label = "Edit Order",
                         onClick = {
                             onEnterEditMode()

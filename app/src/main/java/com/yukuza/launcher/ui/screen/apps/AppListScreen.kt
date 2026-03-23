@@ -37,7 +37,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.tv.foundation.lazy.grid.TvGridCells
 import androidx.tv.foundation.lazy.grid.TvGridItemSpan
 import androidx.tv.foundation.lazy.grid.TvLazyVerticalGrid
-import androidx.tv.foundation.lazy.grid.item
 import androidx.tv.foundation.lazy.grid.items
 import com.yukuza.launcher.domain.model.AppInfo
 import com.yukuza.launcher.ui.components.AppIcon
