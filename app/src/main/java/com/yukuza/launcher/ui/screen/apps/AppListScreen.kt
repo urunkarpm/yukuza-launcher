@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.semantics.contentDescription
@@ -30,6 +31,7 @@ import androidx.tv.foundation.lazy.grid.items
 import com.yukuza.launcher.ui.components.AppIcon
 import com.yukuza.launcher.ui.components.aurora.AuroraBackground
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AppListScreen(
     viewModel: AppListViewModel,
