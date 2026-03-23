@@ -4,11 +4,12 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import app.cash.turbine.test
 import com.yukuza.launcher.data.remote.GeocodingApi
+import com.yukuza.launcher.data.repository.AppRepository
 import com.yukuza.launcher.domain.model.AqiData
 import com.yukuza.launcher.domain.model.NetworkData
 import com.yukuza.launcher.domain.model.WeatherData
 import com.yukuza.launcher.domain.usecase.GetAqiUseCase
-import com.yukuza.launcher.domain.usecase.GetAppsUseCase
+import com.yukuza.launcher.domain.usecase.GetVisibleAppsUseCase
 import com.yukuza.launcher.domain.usecase.GetMediaSessionUseCase
 import com.yukuza.launcher.domain.usecase.GetNetworkSpeedUseCase
 import com.yukuza.launcher.domain.usecase.GetWeatherUseCase
@@ -33,7 +34,8 @@ class HomeViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val getApps = mockk<GetAppsUseCase>()
+    private val getApps = mockk<GetVisibleAppsUseCase>()
+    private val appRepository = mockk<AppRepository>(relaxed = true)
     private val reorderApps = mockk<ReorderAppsUseCase>(relaxed = true)
     private val incrementLaunchCount = mockk<IncrementLaunchCountUseCase>(relaxed = true)
     private val getWeather = mockk<GetWeatherUseCase>()
@@ -60,6 +62,7 @@ class HomeViewModelTest {
         every { getMedia() } returns flowOf(null)
         vm = HomeViewModel(
             getApps,
+            appRepository,
             reorderApps,
             incrementLaunchCount,
             getWeather,

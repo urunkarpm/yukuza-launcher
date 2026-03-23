@@ -1,8 +1,8 @@
 package com.yukuza.launcher.ui.screen.apps
 
 import app.cash.turbine.test
+import com.yukuza.launcher.data.repository.AppRepository
 import com.yukuza.launcher.domain.model.AppInfo
-import com.yukuza.launcher.domain.usecase.GetAppsUseCase
 import com.yukuza.launcher.util.MainDispatcherRule
 import io.mockk.every
 import io.mockk.mockk
@@ -19,20 +19,21 @@ class AppListViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val getApps = mockk<GetAppsUseCase>()
-    private val apps = persistentListOf(
+    private val repository = mockk<AppRepository>(relaxed = true)
+    private val visibleApps = persistentListOf(
         AppInfo("com.youtube", "YouTube", 0),
         AppInfo("com.netflix", "Netflix", 1),
     )
 
     @Test
-    fun `search filters app list by label`() = runTest {
-        every { getApps() } returns flowOf(apps)
-        val vm = AppListViewModel(getApps)
+    fun `search filters visible apps by label`() = runTest {
+        every { repository.getVisibleApps() } returns flowOf(visibleApps)
+        every { repository.getHiddenApps() } returns flowOf(persistentListOf())
+        val vm = AppListViewModel(repository)
         mainDispatcherRule.testDispatcher.scheduler.advanceUntilIdle()
         vm.onSearch("you")
         mainDispatcherRule.testDispatcher.scheduler.advanceUntilIdle()
-        vm.filteredApps.test {
+        vm.visibleApps.test {
             val item = awaitItem()
             val filtered = if (item.isEmpty()) awaitItem() else item
             assertEquals(1, filtered.size)
@@ -42,11 +43,12 @@ class AppListViewModelTest {
     }
 
     @Test
-    fun `empty query returns all apps`() = runTest {
-        every { getApps() } returns flowOf(apps)
-        val vm = AppListViewModel(getApps)
+    fun `empty query returns all visible apps`() = runTest {
+        every { repository.getVisibleApps() } returns flowOf(visibleApps)
+        every { repository.getHiddenApps() } returns flowOf(persistentListOf())
+        val vm = AppListViewModel(repository)
         mainDispatcherRule.testDispatcher.scheduler.advanceUntilIdle()
-        vm.filteredApps.test {
+        vm.visibleApps.test {
             val item = awaitItem()
             val all = if (item.isEmpty()) awaitItem() else item
             assertEquals(2, all.size)
