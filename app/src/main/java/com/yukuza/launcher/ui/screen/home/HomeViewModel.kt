@@ -18,7 +18,8 @@ import com.yukuza.launcher.domain.model.WeatherData
 import com.yukuza.launcher.domain.model.UpdateInfo
 import com.yukuza.launcher.domain.usecase.CheckUpdateUseCase
 import com.yukuza.launcher.domain.usecase.GetAqiUseCase
-import com.yukuza.launcher.domain.usecase.GetAppsUseCase
+import com.yukuza.launcher.data.repository.AppRepository
+import com.yukuza.launcher.domain.usecase.GetVisibleAppsUseCase
 import com.yukuza.launcher.domain.usecase.GetMediaSessionUseCase
 import com.yukuza.launcher.domain.usecase.GetNetworkSpeedUseCase
 import com.yukuza.launcher.domain.usecase.GetWeatherUseCase
@@ -58,7 +59,8 @@ data class HomeUiState(
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getApps: GetAppsUseCase,
+    private val getApps: GetVisibleAppsUseCase,
+    private val appRepository: AppRepository,
     private val reorderApps: ReorderAppsUseCase,
     private val incrementLaunchCount: IncrementLaunchCountUseCase,
     private val getWeather: GetWeatherUseCase,
@@ -175,4 +177,14 @@ class HomeViewModel @Inject constructor(
     fun dismissUpdate() = _uiState.update { it.copy(updateInfo = null) }
 
     fun clearUpToDateFlag() = _uiState.update { it.copy(lastCheckWasUpToDate = false) }
+
+    fun refresh() { appRepository.refresh() }
+
+    fun hideApp(packageName: String) {
+        viewModelScope.launch { appRepository.hideApp(packageName) }
+    }
+
+    fun unhideApp(packageName: String) {
+        viewModelScope.launch { appRepository.unhideApp(packageName) }
+    }
 }
