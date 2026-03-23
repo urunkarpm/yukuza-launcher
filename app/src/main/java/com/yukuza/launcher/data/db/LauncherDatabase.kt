@@ -16,7 +16,7 @@ import com.yukuza.launcher.data.entity.WeatherCacheEntity
         WeatherCacheEntity::class,
         AppLaunchCountEntity::class,
     ],
-    version = 2,
+    version = 3,
     exportSchema = true,
 )
 abstract class LauncherDatabase : RoomDatabase() {
@@ -32,6 +32,14 @@ abstract class LauncherDatabase : RoomDatabase() {
                     "CREATE TABLE IF NOT EXISTS `app_launch_count` " +
                         "(`packageName` TEXT NOT NULL, `count` INTEGER NOT NULL DEFAULT 0, " +
                         "PRIMARY KEY(`packageName`))"
+                )
+            }
+        }
+
+        val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "ALTER TABLE app_order ADD COLUMN isHidden INTEGER NOT NULL DEFAULT 0"
                 )
             }
         }

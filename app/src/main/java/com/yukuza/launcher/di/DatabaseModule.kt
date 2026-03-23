@@ -18,7 +18,7 @@ object DatabaseModule {
     @Singleton
     fun provideDatabase(@ApplicationContext ctx: Context): LauncherDatabase =
         Room.databaseBuilder(ctx, LauncherDatabase::class.java, "launcher.db")
-            .addMigrations(LauncherDatabase.MIGRATION_1_2)
+            .addMigrations(LauncherDatabase.MIGRATION_1_2, LauncherDatabase.MIGRATION_2_3)
             .build()
 
     @Provides
