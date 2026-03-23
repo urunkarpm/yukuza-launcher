@@ -7,6 +7,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.yukuza.launcher.ui.screen.apps.AppListScreen
+import com.yukuza.launcher.ui.screen.apps.AppListViewModel
 import com.yukuza.launcher.ui.screen.home.HomeScreen
 import com.yukuza.launcher.ui.screen.home.HomeViewModel
 
@@ -22,8 +24,11 @@ fun LauncherNavGraph() {
                 uiState = state,
                 onAppFocused = vm::onAppFocused,
                 onAppLaunched = vm::onAppLaunched,
-                onAppLongPress = { /* App shortcuts overlay — Task 18 */ },
                 onReorder = vm::reorder,
+                onHide = vm::hideApp,
+                onUnhide = vm::unhideApp,
+                onEnterEditMode = vm::enterEditMode,
+                onRefresh = vm::refresh,
                 onAssistantClick = { },
                 onNetworkClick = { },
                 onSettingsToggle = vm::toggleSettings,
@@ -38,8 +43,11 @@ fun LauncherNavGraph() {
             )
         }
         composable("apps") {
-            // AppListScreen added in Task 17
-            androidx.compose.material3.Text(androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.app_list_coming_soon))
+            val vm: AppListViewModel = hiltViewModel()
+            AppListScreen(
+                viewModel = vm,
+                onBack = { navController.popBackStack() },
+            )
         }
     }
 }
