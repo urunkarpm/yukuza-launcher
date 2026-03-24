@@ -68,7 +68,7 @@ fun AppRow(
             ) { index, app ->
                 AppIcon(
                     app = app,
-                    isFocused = focusedIndex == index,
+                    isFocused = focusedIndex == index && rowHasFocus,
                     onFocus = { onFocus(index) },
                     onLaunch = { onLaunch(app.packageName) },
                     modifier = if (index == settingsIndex) Modifier.focusRequester(settingsFocusRequester) else Modifier,
