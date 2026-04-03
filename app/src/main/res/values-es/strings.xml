@@ -47,6 +47,12 @@
     <string name="search_city_placeholder">Buscar ciudad…</string>
     <string name="city_selected_format">Ciudad: %1$s</string>
 
+    <!-- Wallpaper -->
+    <string name="wallpaper">Fondo de pantalla</string>
+    <string name="wallpaper_pick">Elegir imagen…</string>
+    <string name="wallpaper_clear">Quitar fondo</string>
+    <string name="wallpaper_content_description">Fondo de pantalla</string>
+
     <!-- App System -->
     <string name="apps_title">APLICACIONES</string>
     <string name="google_assistant_content_description">Asistente de Google</string>

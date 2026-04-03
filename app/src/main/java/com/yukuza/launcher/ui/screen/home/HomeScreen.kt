@@ -1,5 +1,6 @@
 package com.yukuza.launcher.ui.screen.home
 
+import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
@@ -23,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
@@ -62,10 +64,25 @@ fun HomeScreen(
     onCheckForUpdate: () -> Unit = {},
     onDismissUpdate: () -> Unit = {},
     onClearUpToDateFlag: () -> Unit = {},
+    onSetWallpaper: (String) -> Unit = {},
+    onClearWallpaper: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val density = LocalDensity.current.density
+    val context = LocalContext.current
     var selectedApp by remember { mutableStateOf<AppInfo?>(null) }
+
+    val wallpaperLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        uri?.let {
+            runCatching {
+                context.contentResolver.takePersistableUriPermission(
+                    it,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION,
+                )
+            }
+            onSetWallpaper(it.toString())
+        }
+    }
 
     // Refresh on resume (e.g. after disabling an app in Settings)
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -84,8 +101,8 @@ fun HomeScreen(
     }
 
     Box(modifier = modifier.fillMaxSize()) {
-        // Layer 1: Aurora animated background
-        AuroraBackground()
+        // Layer 1: Aurora animated background (with optional wallpaper)
+        AuroraBackground(wallpaperUri = uiState.wallpaperUri)
 
         // Layer 2: UI content
         Box(
@@ -189,6 +206,9 @@ fun HomeScreen(
                 lastCheckWasUpToDate = uiState.lastCheckWasUpToDate,
                 onCheckForUpdate = onCheckForUpdate,
                 onClearUpToDateFlag = onClearUpToDateFlag,
+                wallpaperUri = uiState.wallpaperUri,
+                onWallpaperPick = { wallpaperLauncher.launch("image/*") },
+                onWallpaperClear = onClearWallpaper,
             )
         }
 

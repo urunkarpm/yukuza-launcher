@@ -55,6 +55,7 @@ data class HomeUiState(
     val updateInfo: UpdateInfo? = null,
     val isCheckingUpdate: Boolean = false,
     val lastCheckWasUpToDate: Boolean = false,
+    val wallpaperUri: String? = null,
 )
 
 @HiltViewModel
@@ -82,6 +83,7 @@ class HomeViewModel @Inject constructor(
     private val latKey = doublePreferencesKey("lat")
     private val lonKey = doublePreferencesKey("lon")
     private val cityNameKey = stringPreferencesKey("city_name")
+    private val wallpaperUriKey = stringPreferencesKey("wallpaper_uri")
 
     init {
         viewModelScope.launch {
@@ -94,7 +96,8 @@ class HomeViewModel @Inject constructor(
             val lat = prefs[latKey] ?: defaultLat
             val lon = prefs[lonKey] ?: defaultLon
             val city = prefs[cityNameKey] ?: "Mumbai"
-            _uiState.update { it.copy(cityName = city) }
+            val wallpaper = prefs[wallpaperUriKey]
+            _uiState.update { it.copy(cityName = city, wallpaperUri = wallpaper) }
             fetchWeatherForLocation(lat, lon)
         }
         viewModelScope.launch {
@@ -177,6 +180,20 @@ class HomeViewModel @Inject constructor(
     fun dismissUpdate() = _uiState.update { it.copy(updateInfo = null) }
 
     fun clearUpToDateFlag() = _uiState.update { it.copy(lastCheckWasUpToDate = false) }
+
+    fun setWallpaper(uri: String) {
+        viewModelScope.launch {
+            dataStore.edit { prefs -> prefs[wallpaperUriKey] = uri }
+            _uiState.update { it.copy(wallpaperUri = uri) }
+        }
+    }
+
+    fun clearWallpaper() {
+        viewModelScope.launch {
+            dataStore.edit { prefs -> prefs.remove(wallpaperUriKey) }
+            _uiState.update { it.copy(wallpaperUri = null) }
+        }
+    }
 
     fun refresh() { appRepository.refresh() }
 

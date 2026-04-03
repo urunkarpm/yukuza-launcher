@@ -7,6 +7,7 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,6 +19,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
+import coil.compose.AsyncImage
+import com.yukuza.launcher.R
 import com.yukuza.launcher.ui.theme.YukuzaColors
 
 private data class BlobDef(
@@ -38,7 +43,7 @@ private val blobs = listOf(
 )
 
 @Composable
-fun AuroraBackground(modifier: Modifier = Modifier) {
+fun AuroraBackground(modifier: Modifier = Modifier, wallpaperUri: String? = null) {
     val infiniteTransition = rememberInfiniteTransition(label = "aurora")
 
     val offsets = blobs.mapIndexed { i, blob ->
@@ -53,49 +58,65 @@ fun AuroraBackground(modifier: Modifier = Modifier) {
         )
     }
 
-    Canvas(
-        modifier = modifier
-            .fillMaxSize()
-            .graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen },
-    ) {
-        drawRect(color = YukuzaColors.DeepBlack)
-
-        blobs.forEachIndexed { i, blob ->
-            val t = offsets[i].value
-            val cx = (blob.baseOffset.x + blob.drift.x * t) * size.width
-            val cy = (blob.baseOffset.y + blob.drift.y * t) * size.height
-            val radius = blob.radius * size.height
-
-            withTransform({
-                scale(scaleX = blob.xStretch, scaleY = 1f, pivot = Offset(cx, cy))
-            }) {
-                drawCircle(
-                    brush = Brush.radialGradient(
-                        colorStops = arrayOf(
-                            0.00f to blob.color,
-                            0.40f to blob.color.copy(alpha = blob.color.alpha * 0.55f),
-                            1.00f to Color.Transparent,
-                        ),
-                        center = Offset(cx, cy),
-                        radius = radius,
-                    ),
-                    radius = radius,
-                    center = Offset(cx, cy),
-                    blendMode = BlendMode.Screen,
-                )
-            }
+    Box(modifier = modifier.fillMaxSize()) {
+        if (wallpaperUri != null) {
+            AsyncImage(
+                model = wallpaperUri,
+                contentDescription = stringResource(R.string.wallpaper_content_description),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize(),
+            )
         }
 
-        // Vignette — transparent centre, heavy dark edge so UI content reads cleanly
-        drawRect(
-            brush = Brush.radialGradient(
-                colorStops = arrayOf(
-                    0.00f to Color.Transparent,
-                    0.45f to Color(0x50060210),
-                    1.00f to Color(0xE8060210),
+        Canvas(
+            modifier = Modifier
+                .fillMaxSize()
+                .graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen },
+        ) {
+            // Solid fill only when no wallpaper; semi-transparent dim overlay when wallpaper is set
+            if (wallpaperUri == null) {
+                drawRect(color = YukuzaColors.DeepBlack)
+            } else {
+                drawRect(color = Color(0xCC06030F))
+            }
+
+            blobs.forEachIndexed { i, blob ->
+                val t = offsets[i].value
+                val cx = (blob.baseOffset.x + blob.drift.x * t) * size.width
+                val cy = (blob.baseOffset.y + blob.drift.y * t) * size.height
+                val radius = blob.radius * size.height
+
+                withTransform({
+                    scale(scaleX = blob.xStretch, scaleY = 1f, pivot = Offset(cx, cy))
+                }) {
+                    drawCircle(
+                        brush = Brush.radialGradient(
+                            colorStops = arrayOf(
+                                0.00f to blob.color,
+                                0.40f to blob.color.copy(alpha = blob.color.alpha * 0.55f),
+                                1.00f to Color.Transparent,
+                            ),
+                            center = Offset(cx, cy),
+                            radius = radius,
+                        ),
+                        radius = radius,
+                        center = Offset(cx, cy),
+                        blendMode = BlendMode.Screen,
+                    )
+                }
+            }
+
+            // Vignette — transparent centre, heavy dark edge so UI content reads cleanly
+            drawRect(
+                brush = Brush.radialGradient(
+                    colorStops = arrayOf(
+                        0.00f to Color.Transparent,
+                        0.45f to Color(0x50060210),
+                        1.00f to Color(0xE8060210),
+                    ),
+                    radius = size.maxDimension * 0.70f,
                 ),
-                radius = size.maxDimension * 0.70f,
-            ),
-        )
+            )
+        }
     }
 }

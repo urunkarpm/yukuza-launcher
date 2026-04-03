@@ -56,6 +56,12 @@
     <string name="search_apps_content_description">Search apps</string>
     <string name="app_list_coming_soon">App List — Coming Soon</string>
 
+    <!-- Wallpaper -->
+    <string name="wallpaper">Wallpaper</string>
+    <string name="wallpaper_pick">Pick Image…</string>
+    <string name="wallpaper_clear">Clear Wallpaper</string>
+    <string name="wallpaper_content_description">Background wallpaper</string>
+
     <!-- Update Checker -->
     <string name="update_check_for_update">Check for Update</string>
     <string name="update_checking">Checking…</string>

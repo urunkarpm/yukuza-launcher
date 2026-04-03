@@ -40,6 +40,8 @@ fun LauncherNavGraph() {
                 onCheckForUpdate = vm::checkForUpdate,
                 onDismissUpdate = vm::dismissUpdate,
                 onClearUpToDateFlag = vm::clearUpToDateFlag,
+                onSetWallpaper = vm::setWallpaper,
+                onClearWallpaper = vm::clearWallpaper,
             )
         }
         composable("apps") {

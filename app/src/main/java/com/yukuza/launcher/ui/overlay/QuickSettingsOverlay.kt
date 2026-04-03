@@ -67,6 +67,9 @@ fun QuickSettingsOverlay(
     lastCheckWasUpToDate: Boolean,
     onCheckForUpdate: () -> Unit,
     onClearUpToDateFlag: () -> Unit,
+    wallpaperUri: String? = null,
+    onWallpaperPick: () -> Unit = {},
+    onWallpaperClear: () -> Unit = {},
 ) {
     val context = LocalContext.current
 
@@ -133,6 +136,13 @@ fun QuickSettingsOverlay(
                         onDismiss()
                     },
                 )
+                // Wallpaper row
+                WallpaperRow(
+                    hasWallpaper = wallpaperUri != null,
+                    onPick = onWallpaperPick,
+                    onClear = onWallpaperClear,
+                )
+
                 UpdateCheckerRow(
                     isCheckingUpdate = isCheckingUpdate,
                     updateInfo = updateInfo,
@@ -387,6 +397,39 @@ private fun CityResultRow(result: GeocodingResult, onClick: () -> Unit) {
         modifier = Modifier.padding(horizontal = 4.dp),
         color = Color.White.copy(alpha = 0.06f),
     )
+}
+
+@Composable
+private fun WallpaperRow(
+    hasWallpaper: Boolean,
+    onPick: () -> Unit,
+    onClear: () -> Unit,
+) {
+    Row(
+        Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.wallpaper),
+            color = Color.White,
+            modifier = Modifier.weight(1f),
+        )
+        Spacer(Modifier.width(8.dp))
+        androidx.compose.material3.TextButton(onClick = onPick) {
+            Text(
+                androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.wallpaper_pick),
+                color = Color(0xFFB39DFF),
+            )
+        }
+        if (hasWallpaper) {
+            androidx.compose.material3.TextButton(onClick = onClear) {
+                Text(
+                    androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.wallpaper_clear),
+                    color = Color.White.copy(alpha = 0.5f),
+                )
+            }
+        }
+    }
 }
 
 @Composable
