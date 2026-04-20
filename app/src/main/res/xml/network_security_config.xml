@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">open-meteo.com</domain>
+        <domain includeSubdomains="true">waqi.info</domain>
+        <pin-set expiration="2025-12-31">
+            <!-- Add certificate pins for additional security -->
+        </pin-set>
+    </domain-config>
+</network-security-config>

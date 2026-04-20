@@ -17,12 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.yukuza.launcher.domain.model.AppInfo
 import com.yukuza.launcher.domain.model.AppInfo.Companion.PACKAGE_TV_SETTINGS
+import com.yukuza.launcher.ui.theme.YukuzaColors
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -54,13 +55,14 @@ fun AppRow(
     ) {
         Text(
             text = androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.apps_title),
-            style = MaterialTheme.typography.labelSmall,
-            color = Color.White.copy(alpha = 0.45f),
-            modifier = Modifier.padding(bottom = 12.dp),
+            style = MaterialTheme.typography.titleMedium,
+            color = YukuzaColors.TextSecondary,
+            fontWeight = androidx.compose.ui.text.font.FontWeight.Medium,
+            modifier = Modifier.padding(bottom = 16.dp, start = 8.dp),
         )
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(20.dp),
-            contentPadding = PaddingValues(horizontal = 12.dp),
+            horizontalArrangement = Arrangement.spacedBy(24.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp),
         ) {
             itemsIndexed(
                 items = if (isEditMode) editList else apps.toList(),

@@ -11,6 +11,8 @@ import com.yukuza.launcher.ui.screen.apps.AppListScreen
 import com.yukuza.launcher.ui.screen.apps.AppListViewModel
 import com.yukuza.launcher.ui.screen.home.HomeScreen
 import com.yukuza.launcher.ui.screen.home.HomeViewModel
+import com.yukuza.launcher.ui.screen.settings.SettingsScreen
+import com.yukuza.launcher.ui.screen.settings.SettingsViewModel
 
 @Composable
 fun LauncherNavGraph() {
@@ -31,7 +33,7 @@ fun LauncherNavGraph() {
                 onRefresh = vm::refresh,
                 onAssistantClick = { },
                 onNetworkClick = { },
-                onSettingsToggle = vm::toggleSettings,
+                onSettingsToggle = { navController.navigate("settings") },
                 onSeeAllApps = { navController.navigate("apps") },
                 onCityQueryChange = vm::onCityQueryChange,
                 onCitySelected = vm::onCitySelected,
@@ -47,6 +49,13 @@ fun LauncherNavGraph() {
             AppListScreen(
                 viewModel = vm,
                 onBack = { navController.popBackStack() },
+            )
+        }
+        composable("settings") {
+            val vm: SettingsViewModel = hiltViewModel()
+            SettingsScreen(
+                onBack = { navController.popBackStack() },
+                viewModel = vm,
             )
         }
     }

@@ -20,6 +20,8 @@ android {
         targetSdk = 35
         versionCode = 5
         versionName = "1.3.2"
+        
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
         create("release") {
@@ -30,14 +32,34 @@ android {
         }
     }
     buildTypes {
+        debug {
+            isMinifyEnabled = false
+            applicationIdSuffix = ".debug"
+        }
         release {
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            
+            // Generate baseline profile on release builds
+            isProfileable = true
         }
     }
-    buildFeatures { compose = true; buildConfig = true }
+    buildFeatures { 
+        compose = true
+        buildConfig = true
+    }
+    
+    // Enable Baseline Profiles for better startup performance
+    baselineProfile {
+        mergeIntoMain = true
+        saveInSrc = true
+        filter {
+            include("com.yukuza.launcher.**")
+        }
+    }
+    
     kotlinOptions { jvmTarget = "17" }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

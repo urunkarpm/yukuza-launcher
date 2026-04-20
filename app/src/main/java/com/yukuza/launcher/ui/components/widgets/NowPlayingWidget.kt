@@ -33,16 +33,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.yukuza.launcher.R
 import com.yukuza.launcher.domain.model.MediaData
 import com.yukuza.launcher.ui.components.glass.GlassCard
+import com.yukuza.launcher.ui.theme.YukuzaColors
 
 @Composable
 fun pulseAlpha(): Float {
@@ -82,36 +83,46 @@ fun NowPlayingWidget(
             label = "albumRotation",
         )
 
-        GlassCard(modifier = Modifier.width(460.dp)) {
+        GlassCard(
+            modifier = Modifier.width(480.dp),
+            elevation = 14f,
+            shape = RoundedCornerShape(22.dp),
+        ) {
             Box {
-                // Dominant color bleed background
+                // Gradient background with modern colors
                 Box(
                     Modifier
                         .matchParentSize()
                         .background(
-                            Brush.radialGradient(
-                                listOf(data.dominantColor.copy(alpha = 0.12f), Color.Transparent)
+                            Brush.linearGradient(
+                                colors = listOf(
+                                    YukuzaColors.MediaGradient.copy(alpha = 0.12f),
+                                    YukuzaColors.AuroraBlue.copy(alpha = 0.06f),
+                                ),
+                                begin = androidx.compose.ui.geometry.Offset.Zero,
+                                end = androidx.compose.ui.geometry.Offset.Infinite,
                             )
                         )
                 )
-                Column(Modifier.padding(horizontal = 22.dp, vertical = 20.dp)) {
+                Column(Modifier.padding(horizontal = 26.dp, vertical = 22.dp)) {
                     // Source badge with pulsing dot
                     val pulse = pulseAlpha()
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Box(
                             Modifier
-                                .size(6.dp)
-                                .background(Color(0xFF1DB954), CircleShape)
+                                .size(7.dp)
+                                .background(YukuzaColors.SuccessGreen, CircleShape)
                                 .graphicsLayer { alpha = pulse }
                         )
-                        Spacer(Modifier.width(6.dp))
+                        Spacer(Modifier.width(8.dp))
                         Text(
                             text = data.sourceAppLabel,
-                            style = MaterialTheme.typography.labelSmall,
-                            color = Color.White.copy(alpha = 0.4f),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = YukuzaColors.TextSecondary,
+                            fontWeight = androidx.compose.ui.text.font.FontWeight.Medium,
                         )
                     }
-                    Spacer(Modifier.height(14.dp))
+                    Spacer(Modifier.height(16.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         // Spinning album art
                         AsyncImage(
@@ -119,40 +130,41 @@ fun NowPlayingWidget(
                             contentDescription = androidx.compose.ui.res.stringResource(com.yukuza.launcher.R.string.album_art_content_description),
                             error = painterResource(R.drawable.ic_music_note),
                             modifier = Modifier
-                                .size(64.dp)
-                                .clip(RoundedCornerShape(10.dp))
+                                .size(70.dp)
+                                .clip(RoundedCornerShape(14.dp))
                                 .graphicsLayer {
                                     if (data.isPlaying) rotationZ = rotation
                                 },
                         )
-                        Spacer(Modifier.width(16.dp))
+                        Spacer(Modifier.width(18.dp))
                         Column(Modifier.weight(1f)) {
                             Text(
                                 text = data.trackTitle,
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = Color.White,
+                                style = MaterialTheme.typography.titleMedium,
+                                color = YukuzaColors.TextPrimary,
+                                fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
                             )
                             Text(
                                 text = data.artist,
-                                style = MaterialTheme.typography.labelSmall,
-                                color = Color.White.copy(alpha = 0.5f),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = YukuzaColors.TextTertiary,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
                             )
-                            Spacer(Modifier.height(8.dp))
+                            Spacer(Modifier.height(10.dp))
                             // Progress bar
                             val progress = if (data.durationMs > 0) {
                                 (data.elapsedMs.toFloat() / data.durationMs.toFloat()).coerceIn(0f, 1f)
                             } else 0f
                             LinearProgressIndicator(
                                 progress = { progress },
-                                color = data.dominantColor,
-                                trackColor = Color.White.copy(alpha = 0.12f),
+                                color = YukuzaColors.PrimaryBlue,
+                                trackColor = YukuzaColors.GlassBorderStrong,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(2.dp),
+                                    .height(3.dp),
                             )
                         }
                     }

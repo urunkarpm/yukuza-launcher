@@ -69,4 +69,25 @@
     <string name="update_toast_no_permission">Enable \'Install unknown apps\' for Yukuza Launcher in Settings</string>
     <string name="update_toast_failed">Download failed</string>
     <string name="update_toast_no_update">Could not check for updates</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_section_appearance">Appearance</string>
+    <string name="settings_section_widgets">Widgets</string>
+    <string name="settings_section_system">System</string>
+    <string name="settings_dark_mode">Dark Mode</string>
+    <string name="settings_dark_mode_description">Use dark theme throughout the launcher</string>
+    <string name="settings_aurora_animation">Aurora Animation</string>
+    <string name="settings_aurora_animation_description">Enable animated background effects</string>
+    <string name="settings_ambient_mode">Ambient Mode</string>
+    <string name="settings_ambient_mode_description">Show ambient screensaver when idle</string>
+    <string name="settings_weather_widget">Weather Widget</string>
+    <string name="settings_weather_widget_description">Display current weather conditions</string>
+    <string name="settings_now_playing_widget">Now Playing Widget</string>
+    <string name="settings_now_playing_widget_description">Show currently playing media</string>
+    <string name="settings_network_widget">Network Speed Widget</string>
+    <string name="settings_network_widget_description">Display network speed indicator</string>
+    <string name="settings_auto_update">Auto Update</string>
+    <string name="settings_auto_update_description">Automatically check for updates</string>
+    <string name="settings_press_back_to_exit">Press BACK to return to home</string>
 </resources>

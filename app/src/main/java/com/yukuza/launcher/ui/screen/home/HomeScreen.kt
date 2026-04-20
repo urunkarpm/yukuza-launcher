@@ -2,9 +2,7 @@ package com.yukuza.launcher.ui.screen.home
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -21,8 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
@@ -31,6 +27,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.yukuza.launcher.domain.model.AppInfo
 import com.yukuza.launcher.ui.components.AppRow
 import com.yukuza.launcher.ui.components.aurora.AuroraBackground
+import com.yukuza.launcher.ui.components.glass.GlassCard
 import com.yukuza.launcher.ui.components.widgets.AqiWidget
 import com.yukuza.launcher.ui.components.widgets.ClockWidget
 import com.yukuza.launcher.ui.components.widgets.NetworkWidget
@@ -39,6 +36,7 @@ import com.yukuza.launcher.ui.components.widgets.ScreenTimerWidget
 import com.yukuza.launcher.ui.components.widgets.WeatherWidget
 import com.yukuza.launcher.ui.overlay.AppContextMenuOverlay
 import com.yukuza.launcher.ui.overlay.CityPickerPopup
+import com.yukuza.launcher.ui.theme.YukuzaColors
 
 @Composable
 fun HomeScreen(
@@ -120,30 +118,42 @@ fun HomeScreen(
                 modifier = Modifier.align(Alignment.Center),
             )
 
-            // Bottom: App strip
+            // Bottom: App strip with modern glass design
             Box(
                 Modifier
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth()
-                    .background(Color(0xD004020C))
-                    .border(
-                        BorderStroke(
-                            width = if (density >= 2f) 0.5.dp else 1.dp,
-                            color = Color(0x038632FA).copy(alpha = 0.22f),
-                        ),
-                        RectangleShape,
-                    )
-                    .padding(horizontal = 40.dp, vertical = 20.dp),
+                    .padding(bottom = 24.dp, horizontal = 40.dp),
             ) {
-                AppRow(
-                    apps = uiState.apps,
-                    focusedIndex = uiState.focusedAppIndex,
-                    isEditMode = uiState.isEditMode,
-                    onFocus = onAppFocused,
-                    onLaunch = onAppLaunched,
-                    onReorder = onReorder,
-                    onLongPress = { app -> selectedApp = app },
-                )
+                GlassCard(
+                    elevation = 16f,
+                    shape = RoundedCornerShape(28.dp),
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .background(
+                                brush = androidx.compose.ui.graphics.Brush.linearGradient(
+                                    colors = listOf(
+                                        YukuzaColors.SurfaceCard.copy(alpha = 0.7f),
+                                        YukuzaColors.SurfaceElevated.copy(alpha = 0.5f),
+                                    ),
+                                    begin = androidx.compose.ui.geometry.Offset.Zero,
+                                    end = androidx.compose.ui.geometry.Offset.Infinite,
+                                ),
+                            )
+                            .padding(horizontal = 32.dp, vertical = 24.dp),
+                    ) {
+                        AppRow(
+                            apps = uiState.apps,
+                            focusedIndex = uiState.focusedAppIndex,
+                            isEditMode = uiState.isEditMode,
+                            onFocus = onAppFocused,
+                            onLaunch = onAppLaunched,
+                            onReorder = onReorder,
+                            onLongPress = { app -> selectedApp = app },
+                        )
+                    }
+                }
             }
         }
 
@@ -173,24 +183,8 @@ fun HomeScreen(
             )
         }
 
-        // Quick settings overlay
-        if (uiState.showSettings) {
-            com.yukuza.launcher.ui.overlay.QuickSettingsOverlay(
-                onDismiss = onSettingsToggle,
-                isNightMode = uiState.isNightMode,
-                onNightModeToggle = onNightModeToggle,
-                cityQuery = uiState.cityQuery,
-                citySuggestions = uiState.citySuggestions,
-                cityName = uiState.cityName,
-                onCityQueryChange = onCityQueryChange,
-                onCitySelected = onCitySelected,
-                isCheckingUpdate = uiState.isCheckingUpdate,
-                updateInfo = uiState.updateInfo,
-                lastCheckWasUpToDate = uiState.lastCheckWasUpToDate,
-                onCheckForUpdate = onCheckForUpdate,
-                onClearUpToDateFlag = onClearUpToDateFlag,
-            )
-        }
+        // Quick settings overlay - removed in favor of dedicated Settings screen
+        // Users can access settings via navigation to the settings screen
 
         // Update dialog
         if (uiState.updateInfo != null) {

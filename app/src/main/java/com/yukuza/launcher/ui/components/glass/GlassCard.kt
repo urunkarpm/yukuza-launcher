@@ -19,15 +19,16 @@ import com.yukuza.launcher.ui.theme.YukuzaColors
 @Composable
 fun GlassCard(
     modifier: Modifier = Modifier,
+    elevation: Float = 8f,
+    shape: RoundedCornerShape = RoundedCornerShape(16.dp),
     content: @Composable BoxScope.() -> Unit,
 ) {
     val density = LocalDensity.current.density
-    val shape = RoundedCornerShape(12.dp)
     Box(
         modifier = modifier
             .border(
                 width = if (density >= 2f) 0.5.dp else 1.dp,
-                color = YukuzaColors.GlassBorder,
+                color = YukuzaColors.GlassBorderStrong,
                 shape = shape,
             ),
     ) {
@@ -39,7 +40,7 @@ fun GlassCard(
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                         @Suppress("NewApi")
                         renderEffect = AndroidRenderEffect
-                            .createBlurEffect(30f, 30f, AndroidShader.TileMode.CLAMP)
+                            .createBlurEffect(elevation, elevation, AndroidShader.TileMode.CLAMP)
                             .asComposeRenderEffect()
                     }
                 }

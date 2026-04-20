@@ -22,6 +22,7 @@
         android:icon="@drawable/ic_launcher"
         android:theme="@style/Theme.YukuzaLauncher"
         android:supportsRtl="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:localeConfig="@xml/locales_config">
 
         <activity

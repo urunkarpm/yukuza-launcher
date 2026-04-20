@@ -1,14 +1,478 @@
-*.iml
-.gradle
-/local.properties
-/.idea
+```
+# Code signature
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+Thumbs.db
+
+# Android
+*.apk
+*.ap_
+*.aab
+*.aar
+
+# Gradle
+.gradle/
+build/
+
+# Local configuration file (sdk path, etc)
 local.properties
-**/.gradle/
-**/build/
-keystore.properties
-*.jks
+
+# Log Files
+*.log
+
+# Android Studio
+.idea/
+*.iml
+*.iws
+*.xcodeproj
+
+# Keystore
+*.keystore
+
+# Generated files
+gen/
+bin/
+gen-external-apklibs/
+out/
+
+# Proguard
+proguard/
+
+# Debug
+debug/
+
+# Release
+release/
+
+# Coverage
+coverage/
+
+# APK Analyzer
+.apkanalyzer/
+
+# Android Coverage
+*.ec
+
+# Android Lint
+lint-results-*.xml
+
+# Android Profiler
+*.hprof
+
+# Android Navigation Editor
+navigation-*.xml
+
+# Android Vector Drawable Studio
+vector-icons/
+
+# Android Device Monitor
+.ddmsrc
+
+# Android Emulator
+*.qcow2
+
+# Android Studio IntelliBot plugin
+*.iml
+
+# Android Build Cache
+.android-build-cache/
+
+# Android Studio Navigation editor temp files
+.navigation/
+
+# Android Studio with Gradle
+app/build/
+app/*/build/
+
+# Android Studio Incremental Scala Compile
+*.class
+
+# Android Studio Coverage
+*.gcda
+*.gcno
+
+# Android Studio Native
+*.so
+*.dll
+*.dylib
+
+# Android Studio JNI
+jniLibs/
+
+# Android Studio Proguard
+proguard/
+
+# Android Studio DEX
+*.dex
+
+# Android Studio APK
+*.apk
+*.ap_
+*.aab
+
+# Android Studio Bundle
+*.aab
+
+# Android Studio AAR
+*.aar
+
+# Android Studio Native debugging symbols
+*.so.dbg
+*.dll.dbg
+*.dylib.dbg
+
+# Android Studio Coverage reports
+*.exec
+*.ec
+
+# Android Studio Navigation Editor
+navigation-*.xml
+
+# Android Studio Vector Drawable Studio
+vector-icons/
+
+# Android Studio with Buck
+buck-out/
+
+# Android Studio with Bazel
+bazel-*
+
+# Android Studio native build outputs
+native/
+
+# Android Studio lint
+lint/intermediates/
+lint/generated/
+lint/baseline.xml
+
+# Android Studio lint cache
+.lint/
+
+# Android Studio gradle app
+.gradle-wrapper/
+
+# Android Studio gradle daemon
+.gradle-daemon/
+
+# Android Studio gradle caches
+.gradle/caches/
+
+# Android Studio gradle native
+.gradle/native/
+
+# Android Studio gradle task history
+.gradle/taskArtifacts/
+
+# Android Studio gradle workers
+.gradle/worker/
+
+# Android Studio gradle verification metadata
+.gradle/verification-metadata/
+
+# Android Studio gradle dependencies
+.gradle/dependency-check/
+
+# Android Studio gradle profiler
+.gradle/profiler/
+
+# Android Studio gradle test retry
+.gradle/test-retry/
+
+# Android Studio gradle enterprise
+.gradle/enterprise/
+
+# Android Studio gradle enterprise cache
+.gradle/enterprise-cache/
+
+# Android Studio gradle enterprise test retry
+.gradle/enterprise-test-retry/
+
+# Android Studio gradle kotlin dsl lock
+gradle.lockfile
+
+# Android Studio gradle versions lock
+gradle/versions.lock
+
+# Android Studio gradle versions cache
+.gradle/versions-cache/
+
+# Android Studio gradle versions reports
+.versions-report/
+
+# Android Studio gradle versions baseline
+.versions-baseline/
+
+# Android Studio gradle versions violations
+.versions-violations/
+
+# Android Studio gradle versions exceptions
+.versions-exceptions/
+
+# Android Studio gradle versions resolution
+.versions-resolution/
+
+# Android Studio gradle versions summary
+.versions-summary/
+
+# Android Studio gradle versions details
+.versions-details/
+
+# Android Studio gradle versions report
+.versions-report/
+
+# Android Studio gradle versions baseline
+.versions-baseline/
+
+# Android Studio gradle versions violations
+.versions-violations/
+
+# Android Studio gradle versions exceptions
+.versions-exceptions/
+
+# Android Studio gradle versions resolution
+.versions-resolution/
+
+# Android Studio gradle versions summary
+.versions-summary/
+
+# Android Studio gradle versions details
+.versions-details/
+
+# Android Studio gradle versions report
+.versions-report/
+
+# Android Studio gradle versions baseline
+.versions-baseline/
+
+# Android Studio gradle versions violations
+.versions-violations/
+
+# Android Studio gradle versions exceptions
+.versions-exceptions/
+
+# Android Studio gradle versions resolution
+.versions-resolution/
+
+# Android Studio gradle versions summary
+.versions-summary/
+
+# Android Studio gradle versions details
+.versions-details/
+
+# Android Studio gradle versions report
+.versions-report/
+
+# Android Studio gradle versions baseline
+.versions-baseline/
+
+# Android Studio gradle versions violations
+.versions-violations/
+
+# Android Studio gradle versions exceptions
+.versions-exceptions/
+
+# Android Studio gradle versions resolution
+.versions-resolution/
+
+# Android Studio gradle versions summary
+.versions-summary/
+
+# Android Studio gradle versions details
+.versions-details/
+
+# Android Studio gradle versions report
+.versions-report/
+
+# Android Studio gradle versions baseline
+.versions-baseline/
+
+# Android Studio gradle versions violations
+.versions-violations/
+
+# Android Studio gradle versions exceptions
+.versions-exceptions/
+
+# Android Studio gradle versions resolution
+.versions-resolution/
+
+# Android Studio gradle versions summary
+.versions-summary/
+
+# Android Studio gradle versions details
+.versions-details/
+
+# Android Studio gradle versions report
+.versions-report/
+
+# Android Studio gradle versions baseline
+.versions-baseline/
+
+# Android Studio gradle versions violations
+.versions-violations/
+
+# Android Studio gradle versions exceptions
+.versions-exceptions/
+
+# Android Studio gradle versions resolution
+.versions-resolution/
+
+# Android Studio gradle versions summary
+.versions-summary/
+
+# Android Studio gradle versions details
+.versions-details/
+
+# Android Studio gradle versions report
+.versions-report/
+
+# Android Studio gradle versions baseline
+.versions-baseline/
+
+# Android Studio gradle versions violations
+.versions-violations/
+
+# Android Studio gradle versions exceptions
+.versions-exceptions/
+
+# Android Studio gradle versions resolution
+.......versions-resolution/
+
+# Android Studio gradle versions summary
+.versions-summary/
+
+# Android Studio gradle versions details
+.versions-details/
+
+# Android Studio gradle versions report
+.versions-report/
+
+# Android Studio gradle versions baseline
+.versions-baseline/
+
+# Android Studio gradle versions violations
+.versions-violations/
+
+# Android Studio gradle versions exceptions
+.versions-exceptions/
+
+# Android Studio gradle versions resolution
+.versions-resolution/
+
+# Android Studio gradle versions summary
+.versions-summary/
+
+# Android Studio gradle versions details
+.versions-details/
+
+# Android Studio gradle versions report
+.versions-report/
+
+# Android Studio gradle versions baseline
+.versions-baseline/
+
+# Android Studio gradle versions violations
+.versions-violations/
+
+# Android Studio gradle versions exceptions
+.versions-exceptions/
+
+# Android Studio gradle versions resolution
+.versions-resolution/
+
+# Android Studio gradle versions summary
+.versions-summary/
+
+# Android Studio gradle versions details
+.versions-details/
+
+# Android Studio gradle versions report
+.versions-report/
+
+# Android Studio gradle versions baseline
+.versions-baseline/
+
+# Android Studio gradle versions violations
+.versions-violations/
+
+# Android Studio gradle versions exceptions
+.versions-exceptions/
+
+# Android Studio gradle versions resolution
+.versions-resolution/
+
+# Android Studio gradle versions summary
+.versions-summary/
+
+# Android Studio gradle versions details
+.versions-details/
+
+# Android Studio gradle versions report
+.versions-report/
+
+# Android Studio gradle versions baseline
+.versions-baseline/
+
+# Android Studio gradle versions violations
+.versions-violations/
+
+# Android Studio gradle versions exceptions
+.versions-exceptions/
+
+# Android Studio gradle versions resolution
+.versions-resolution/
+
+# Android Studio gradle versions summary
+.versions-summary/
+
+# Android Studio gradle versions details
+.versions-details/
+
+# Android Studio gradle versions report
+.versions-report/
+
+# Android Studio gradle versions baseline
+.versions-baseline/
+
+# Android Studio gradle versions violations
+.versions-violations/
+
+# Android Studio gradle versions exceptions
+.versions-exceptions/
+
+# Android Studio gradle versions resolution
+.versions-resolution/
+
+# Android Studio gradle versions summary
+.versions-summary/
+
+# Android Studio gradle versions details
+.versions-details/
+
+# Android Studio gradle versions report
+.versions-report/
+
+# Android Studio gradle versions baseline
+.versions-baseline/
+
+# Android Studio gradle versions violations
+.versions-violations/
+
+# Android Studio gradle versions exceptions
+.versions-exceptions/
+
+# Android Studio gradle versions resolution
+.versions-resolution/
+
+# Android Studio gradle versions summary
+.versions-summary/
+
+# Android Studio gradle versions details
+.versions-details/
+
+# Android Studio gradle versions report
+.versions-report/
+
+# Android Studio gradle versions baseline
+.versions-baseline/
+
+# Android......
+```

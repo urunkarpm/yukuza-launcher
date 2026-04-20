@@ -65,30 +65,35 @@ fun AppIcon(
     val context = LocalContext.current
 
     val scale by animateFloatAsState(
-        targetValue = if (isFocused) 1.18f else 1f,
+        targetValue = if (isFocused) 1.15f else 1f,
         animationSpec = tween(durationMillis = SCALE_DURATION, easing = ScaleEasing),
         label = "scale",
     )
     val saturation by animateFloatAsState(
-        targetValue = if (isFocused) 1f else 0f,
-        animationSpec = snap(),
+        targetValue = if (isFocused) 1f else 0.3f,
+        animationSpec = tween(durationMillis = 150),
         label = "saturation",
     )
     val ringAlpha by animateFloatAsState(
         targetValue = if (isFocused) 1f else 0f,
-        animationSpec = snap(),
+        animationSpec = tween(durationMillis = 150),
         label = "ringAlpha",
     )
     val labelAlpha by animateFloatAsState(
-        targetValue = if (isFocused) 1f else 0.5f,
-        animationSpec = snap(),
+        targetValue = if (isFocused) 1f else 0.6f,
+        animationSpec = tween(durationMillis = 150),
         label = "labelAlpha",
+    )
+    val shadowElevation by animateFloatAsState(
+        targetValue = if (isFocused) 12f else 0f,
+        animationSpec = tween(durationMillis = 150),
+        label = "elevation",
     )
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .width(88.dp)
+            .width(92.dp)
             .then(if (isHidden) Modifier.alpha(0.5f) else Modifier)
             .onFocusChanged { if (it.isFocused) onFocus() }
             .focusable()
@@ -101,22 +106,25 @@ fun AppIcon(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .size(80.dp)
+                .size(84.dp)
                 .graphicsLayer {
                     scaleX = scale
                     scaleY = scale
+                    this.shadowElevation = shadowElevation
+                    ambientShadowColor = YukuzaColors.PrimaryBlue.copy(alpha = 0.3f * ringAlpha)
+                    spotShadowColor = YukuzaColors.PrimaryBlue.copy(alpha = 0.5f * ringAlpha)
                 }
-                .clip(RoundedCornerShape(20.dp))
+                .clip(RoundedCornerShape(24.dp))
                 .border(
-                    width = 2.dp,
-                    color = Color.White.copy(alpha = ringAlpha),
-                    shape = RoundedCornerShape(20.dp),
+                    width = 2.5.dp,
+                    color = YukuzaColors.FocusRing.copy(alpha = ringAlpha),
+                    shape = RoundedCornerShape(24.dp),
                 )
                 .background(
-                    color = Color.White.copy(alpha = ringAlpha * 0.15f),
-                    shape = RoundedCornerShape(20.dp),
+                    color = YukuzaColors.SurfaceCard.copy(alpha = 0.3f * ringAlpha + 0.1f),
+                    shape = RoundedCornerShape(24.dp),
                 )
-                .padding(4.dp),
+                .padding(5.dp),
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(context)
@@ -127,26 +135,26 @@ fun AppIcon(
                     ColorMatrix().apply { setToSaturation(saturation) }
                 ),
                 modifier = Modifier
-                    .size(64.dp)
-                    .clip(RoundedCornerShape(14.dp)),
+                    .size(68.dp)
+                    .clip(RoundedCornerShape(18.dp)),
             )
             if (isHidden) {
                 Icon(
                     imageVector = Icons.Default.VisibilityOff,
                     contentDescription = null,
-                    tint = Color.White.copy(alpha = 0.8f),
+                    tint = YukuzaColors.TextSecondary,
                     modifier = Modifier
-                        .size(18.dp)
+                        .size(20.dp)
                         .align(Alignment.TopEnd)
-                        .padding(2.dp),
+                        .padding(3.dp),
                 )
             }
         }
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(10.dp))
         Text(
             text = app.label,
-            style = MaterialTheme.typography.labelSmall,
-            color = Color.White.copy(alpha = labelAlpha),
+            style = MaterialTheme.typography.bodyMedium,
+            color = YukuzaColors.TextPrimary.copy(alpha = labelAlpha),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )

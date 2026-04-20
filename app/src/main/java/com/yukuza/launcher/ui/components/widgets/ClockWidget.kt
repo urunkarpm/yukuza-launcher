@@ -35,27 +35,48 @@ fun ClockWidget(modifier: Modifier = Modifier) {
     val ampm = time.format(ampmFormatter)
     val today = remember { LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE · d MMMM yyyy", java.util.Locale.getDefault())) }
 
-    GlassCard(modifier = modifier) {
-        Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp)) {
+    GlassCard(
+        modifier = modifier,
+        elevation = 12f,
+        shape = RoundedCornerShape(20.dp),
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 24.dp, vertical = 18.dp)
+                .background(
+                    brush = androidx.compose.ui.graphics.Brush.linearGradient(
+                        colors = listOf(
+                            YukuzaColors.ClockGradientStart.copy(alpha = 0.15f),
+                            YukuzaColors.ClockGradientEnd.copy(alpha = 0.08f),
+                        ),
+                        begin = androidx.compose.ui.geometry.Offset.Zero,
+                        end = androidx.compose.ui.geometry.Offset.Infinite,
+                    ),
+                )
+                .padding(horizontal = 24.dp, vertical = 18.dp),
+        ) {
             Row(verticalAlignment = Alignment.Bottom) {
                 Text(
                     text = time.format(timeFormatter),
                     style = MaterialTheme.typography.displayLarge,
-                    color = Color.White,
+                    color = YukuzaColors.TextPrimary,
+                    fontWeight = androidx.compose.ui.text.font.FontWeight.Light,
                 )
-                Spacer(Modifier.width(8.dp))
+                Spacer(Modifier.width(10.dp))
                 Text(
                     text = ampm,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = Color.White.copy(alpha = 0.45f),
-                    modifier = Modifier.padding(bottom = 6.dp),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = YukuzaColors.TextSecondary,
+                    modifier = Modifier.padding(bottom = 8.dp),
+                    fontWeight = androidx.compose.ui.text.font.FontWeight.Medium,
                 )
             }
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(8.dp))
             Text(
                 text = today,
-                style = MaterialTheme.typography.labelSmall,
-                color = Color.White.copy(alpha = 0.6f),
+                style = MaterialTheme.typography.bodyMedium,
+                color = YukuzaColors.TextTertiary,
+                fontWeight = androidx.compose.ui.text.font.FontWeight.Normal,
             )
         }
     }

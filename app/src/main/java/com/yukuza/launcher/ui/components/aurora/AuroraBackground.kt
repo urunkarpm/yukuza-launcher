@@ -30,11 +30,10 @@ private data class BlobDef(
 )
 
 private val blobs = listOf(
-    BlobDef(Color(0xFF8C32FF).copy(alpha = 0.42f), Offset(0.08f, 0.28f), Offset(0.06f,  0.04f), 0.58f, 2.2f, 20000),
-    BlobDef(Color(0xFFE628A0).copy(alpha = 0.34f), Offset(0.78f, 0.18f), Offset(-0.07f, 0.05f), 0.50f, 1.8f, 17000),
-    BlobDef(Color(0xFF3C64FF).copy(alpha = 0.32f), Offset(0.48f, 0.68f), Offset(0.05f, -0.06f), 0.52f, 2.4f, 22000),
-    BlobDef(Color(0xFF00B4DC).copy(alpha = 0.26f), Offset(0.20f, 0.72f), Offset(0.07f, -0.04f), 0.44f, 1.9f, 16000),
-    BlobDef(Color(0xFFB43CFF).copy(alpha = 0.24f), Offset(0.62f, 0.48f), Offset(-0.05f, 0.06f), 0.40f, 2.0f, 19000),
+    BlobDef(YukuzaColors.AuroraPurple.copy(alpha = 0.35f), Offset(0.10f, 0.25f), Offset(0.05f,  0.03f), 0.55f, 2.0f, 22000),
+    BlobDef(YukuzaColors.AuroraPink.copy(alpha = 0.28f), Offset(0.75f, 0.20f), Offset(-0.06f, 0.04f), 0.48f, 1.7f, 19000),
+    BlobDef(YukuzaColors.AuroraBlue.copy(alpha = 0.30f), Offset(0.50f, 0.65f), Offset(0.04f, -0.05f), 0.50f, 2.2f, 24000),
+    BlobDef(YukuzaColors.AuroraTeal.copy(alpha = 0.25f), Offset(0.22f, 0.70f), Offset(0.06f, -0.03f), 0.42f, 1.8f, 18000),
 )
 
 @Composable
@@ -58,7 +57,8 @@ fun AuroraBackground(modifier: Modifier = Modifier) {
             .fillMaxSize()
             .graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen },
     ) {
-        drawRect(color = YukuzaColors.DeepBlack)
+        // Deep modern dark background
+        drawRect(color = YukuzaColors.BackgroundDarker)
 
         blobs.forEachIndexed { i, blob ->
             val t = offsets[i].value
@@ -73,7 +73,7 @@ fun AuroraBackground(modifier: Modifier = Modifier) {
                     brush = Brush.radialGradient(
                         colorStops = arrayOf(
                             0.00f to blob.color,
-                            0.40f to blob.color.copy(alpha = blob.color.alpha * 0.55f),
+                            0.35f to blob.color.copy(alpha = blob.color.alpha * 0.5f),
                             1.00f to Color.Transparent,
                         ),
                         center = Offset(cx, cy),
@@ -86,15 +86,15 @@ fun AuroraBackground(modifier: Modifier = Modifier) {
             }
         }
 
-        // Vignette — transparent centre, heavy dark edge so UI content reads cleanly
+        // Subtle vignette for better content readability
         drawRect(
             brush = Brush.radialGradient(
                 colorStops = arrayOf(
                     0.00f to Color.Transparent,
-                    0.45f to Color(0x50060210),
-                    1.00f to Color(0xE8060210),
+                    0.50f to YukuzaColors.BackgroundDark.copy(alpha = 0.3f),
+                    1.00f to YukuzaColors.BackgroundDark.copy(alpha = 0.7f),
                 ),
-                radius = size.maxDimension * 0.70f,
+                radius = size.maxDimension * 0.75f,
             ),
         )
     }
